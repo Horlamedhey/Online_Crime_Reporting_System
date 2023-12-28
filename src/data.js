@@ -29,47 +29,47 @@ export const natureOfCrime = [
 ];
 export const station = [
   {
-    stationId: "00001",
+    stationId: "1001",
     stationName: "Dutse Command",
     password: "admin",
   },
   {
-    stationId: "00002",
+    stationId: "1002",
     stationName: "Dutse Command",
     password: "admin",
   },
   {
-    stationId: "00003",
+    stationId: "1003",
     stationName: "kiyari Command",
     password: "admin",
   },
   {
-    stationId: "00004",
+    stationId: "1004",
     stationName: "jaho Command",
     password: "admin",
   },
   {
-    stationId: "00005",
+    stationId: "1005",
     stationName: "hamisu Command",
     password: "admin",
   },
   {
-    stationId: "00006",
+    stationId: "1006",
     stationName: "hamisu Command",
     password: "admin",
   },
   {
-    stationId: "00007",
+    stationId: "1007",
     stationName: "hamisu Command",
     password: "admin",
   },
   {
-    stationId: "00008",
+    stationId: "1008",
     stationName: "hamisu Command",
     password: "admin",
   },
   {
-    stationId: "00009",
+    stationId: "1009",
     stationName: "hamisu Command",
     password: "admin",
   },
@@ -83,6 +83,7 @@ export const tableHeaders = [
   { title: "Case ID", value: "caseId" },
   { title: "Station ID", value: "stationId" },
   { title: "Reporter", value: "reporter" },
+  { title: "Address", value: "address" },
   { title: "Nature of crime", value: "natureOfCrime" },
   { title: "Date", value: "createdAt" },
   { title: "Status", value: "status" },

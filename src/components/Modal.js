@@ -75,9 +75,13 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
                 <FormLabel>Phone</FormLabel>
                 <Input type="tel" placeholder="Phone number" />
               </FormControl>
+              <FormControl id="address" mb="4">
+                <FormLabel>Address</FormLabel>
+                <Input type="text" placeholder="Enter your Address" />
+              </FormControl>
               <FormControl id="location" mb="4">
                 <FormLabel>Location</FormLabel>
-                <Input type="text" placeholder="Enter your location" />
+                <Input type="text" placeholder="Enter your Location" />
               </FormControl>
               <Center fontSize="2xl" mb="4">
                 Crime details

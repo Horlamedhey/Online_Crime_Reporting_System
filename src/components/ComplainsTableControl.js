@@ -19,7 +19,7 @@ import {
   tableHeaders as sortOptions,
 } from "@/data.js";
 import Searchbar from "./Searchbar";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export default function ComplainsTableControl({ setTableState }) {
   const [filter, setFilter] = useState("");
@@ -93,11 +93,21 @@ export default function ComplainsTableControl({ setTableState }) {
   }, [sortLoading, searchLoading, filterLoading, setTableState]);
 
   return (
-    <Flex justifyContent="space-between" p={2} alignItems="center">
+    <Flex
+      justifyContent="space-between"
+      p={2}
+      alignItems="center"
+    >
       <Box w="50%">
-        <Searchbar isLoading={searchLoading} searchCrime={searchCrime} />
+        <Searchbar
+          isLoading={searchLoading}
+          searchCrime={searchCrime}
+        />
       </Box>
-      <Flex pr={1} gap="20px">
+      <Flex
+        pr={1}
+        gap="20px"
+      >
         <Box>
           <Menu isLazy>
             <MenuButton
@@ -109,11 +119,13 @@ export default function ComplainsTableControl({ setTableState }) {
               {parsedFilter &&
                 `: ${parsedFilter.group} - ${parsedFilter.item.label}`}
             </MenuButton>
-            <MenuList overflow="auto" maxH="60vh">
+            <MenuList
+              overflow="auto"
+              maxH="60vh"
+            >
               {filters.map((u, i) => (
-                <>
+                <React.Fragment key={u.title}>
                   <MenuOptionGroup
-                    key={u.title}
                     type="radio"
                     value={filter}
                     onChange={(currFilter) => {
@@ -122,7 +134,6 @@ export default function ComplainsTableControl({ setTableState }) {
                     }}
                     title={u.title}
                   >
-                    {/* setFilter({ group: u.title, item: v }) */}
                     {u.items.map((v) => (
                       <MenuItemOption
                         key={v.label}
@@ -132,20 +143,25 @@ export default function ComplainsTableControl({ setTableState }) {
                       </MenuItemOption>
                     ))}
                   </MenuOptionGroup>
-                  {i !== filters.length - 1 && <MenuDivider key={i} />}
-                </>
+                  {i !== filters.length - 1 && <MenuDivider />}
+                </React.Fragment>
               ))}
-
-              {/* why i  dont want to use map for nature of crime is that because we are not doing any manpulation or extracting a particular stuff from the array so no need of creating a new array again */}
             </MenuList>
           </Menu>
         </Box>
         <Flex gap={2}>
           <Menu isLazy>
-            <MenuButton as={Button} colorScheme="blue" isLoading={sortLoading}>
+            <MenuButton
+              as={Button}
+              colorScheme="blue"
+              isLoading={sortLoading}
+            >
               Sort by{sortLabel && `: ${sortLabel}`}
             </MenuButton>
-            <MenuList overflow="auto" maxH="60vh">
+            <MenuList
+              overflow="auto"
+              maxH="60vh"
+            >
               <MenuOptionGroup
                 type="radio"
                 value={sort}
@@ -162,8 +178,6 @@ export default function ComplainsTableControl({ setTableState }) {
                   </MenuItemOption>
                 ))}
               </MenuOptionGroup>
-
-              {/* why i  dont want to use map for nature of crime is that because we are not doing any manpulation or extracting a particular stuff from the array so no need of creating a new array again */}
             </MenuList>
           </Menu>
 

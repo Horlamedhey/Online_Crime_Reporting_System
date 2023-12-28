@@ -12,14 +12,12 @@ import {
   Badge,
 } from "@chakra-ui/react";
 
-import crimeRecord from "@/record.json";
-import { badge } from "@/data.js";
+import { badge, tableHeaders } from "@/data.js";
 import { useState } from "react";
 import CrimeDetailsModal from "./CrimeDetailsModal";
 import ComplainsTableControl from "./ComplainsTableControl";
-import { tableHeaders } from "@/data.js";
 
-export default function AdminTable() {
+export default function AdminTable({ tableData }) {
   const [crimeModal, setCrimeModal] = useState(false);
   const [currentCase, setCurrentCase] = useState(null);
   const [tableDisabled, setTableDisabled] = useState(false);
@@ -44,11 +42,15 @@ export default function AdminTable() {
             </Tr>
           </Thead>
           <Tbody>
-            {crimeRecord?.map((item) => (
-              <Tr key={item.caseId} style={{ textTransform: "uppercase" }}>
+            {tableData?.map((item) => (
+              <Tr
+                key={item.caseId}
+                style={{ textTransform: "uppercase" }}
+              >
                 <Td>{item.caseId}</Td>
                 <Td>{item.stationId}</Td>
                 <Td>{item.reporter}</Td>
+                <Td>{item.address}</Td>
                 <Td>{item.natureOfCrime}</Td>
                 <Td>{item.createdAt}</Td>
                 <Td>
@@ -83,8 +85,6 @@ export default function AdminTable() {
         closeModal={() => setCrimeModal(false)}
         currentCase={currentCase}
       />
-      {/* {(classes, isOpen, closeModal, currentCase)} */}
-      {/* <CrimeDetailsModal openModal={crimeModal} /> */}
     </div>
   );
 }

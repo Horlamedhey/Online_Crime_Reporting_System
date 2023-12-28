@@ -7,7 +7,6 @@ import Searchbar from "@/components/Searchbar.js";
 import ModalComponent from "@/components/Modal.js";
 import record from "@/record.json";
 import CrimeDetailsModal from "@/components/CrimeDetailsModal.js";
-
 export default function Home() {
   const [searchRecord, setSearchRecord] = useState(null);
   const [searchRecordModal, setSearchRecordModal] = useState(false);
@@ -30,6 +29,7 @@ export default function Home() {
     //TODO:search a crime using crime code
   };
   const [isOpen, setIsOpen] = useState(false);
+
   return (
     <main className={styles.main}>
       <div className={styles.hero}>
@@ -42,7 +42,10 @@ export default function Home() {
         />
         <div className={styles.overlay}>
           <div>
-            <Searchbar searchCrime={searchCrime} isLoading={isLoading} />
+            <Searchbar
+              searchCrime={searchCrime}
+              isLoading={isLoading}
+            />
             <Button
               _hover={{ bg: "#fff", color: "blue" }}
               fontSize="3xl"

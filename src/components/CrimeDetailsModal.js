@@ -12,7 +12,8 @@ import {
 } from "@chakra-ui/react";
 
 export default function CrimeDetailsModal({ isOpen, closeModal, currentCase }) {
-  const isClient = !localStorage.getItem("loggedInStation");
+  const isClient = false;
+  // !localStorage.getItem("loggedInStation");
   return (
     <div>
       <Modal
