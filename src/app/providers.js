@@ -54,6 +54,7 @@ const {
   MenuItemOption,
   Checkbox,
   MenuOptionGroup,
+  Progress,
 } = chakraTheme.components;
 const _theme = extendBaseTheme({
   components: {
@@ -110,6 +111,7 @@ const _theme = extendBaseTheme({
     MenuItemOption,
     MenuOptionGroup,
     Checkbox,
+    Progress,
   },
 });
 

@@ -1,15 +1,28 @@
+"use client";
 import { Button, Input, Flex } from "@chakra-ui/react";
-import { useState } from "react";
-export default function Searchbar({ searchCrime, isLoading }) {
+import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
+
+export default function Searchbar({
+  color,
+  isLoading,
+  isClearable,
+  searchCrime,
+}) {
   /*this is created to search for a rime and return and get the state of the input field using props */
   const [query, setQuery] = useState("");
 
+  const [tableControl, setTableControl] = useState(null);
+
+  useEffect(() => {
+    setTableControl(document.getElementById("tableControl"));
+  }, [tableControl]);
   return (
     <Flex alignItems="center" gap="10px" w="100%">
       <Input
         placeholder="Search crime status"
         size="lg"
-        color="white"
+        color={color ?? "white"}
         value={query}
         onChange={(e) => setQuery(e.target.value)}
       />
@@ -23,6 +36,22 @@ export default function Searchbar({ searchCrime, isLoading }) {
       >
         Search
       </Button>
+      {isClearable &&
+        tableControl &&
+        createPortal(
+          <Button
+            colorScheme="red"
+            type="button"
+            onClick={() => {
+              setQuery("");
+              searchCrime("");
+            }}
+            isDisabled={!query}
+          >
+            Clear
+          </Button>,
+          tableControl
+        )}
     </Flex>
   );
 }

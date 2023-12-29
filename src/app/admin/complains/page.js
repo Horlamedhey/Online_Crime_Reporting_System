@@ -14,7 +14,7 @@ export default async function Complains({ searchParams }) {
   return (
     <main className={styles.main}>
       <div>
-        <AdminTable tableData={data} />
+        <AdminTable data={data} />
       </div>
     </main>
   );

@@ -10,10 +10,15 @@ import {
   ModalCloseButton,
   Text,
 } from "@chakra-ui/react";
+import { useState, useEffect } from "react";
 
 export default function CrimeDetailsModal({ isOpen, closeModal, currentCase }) {
-  const isClient = false;
-  // !localStorage.getItem("loggedInStation");
+  const [isClient, setIsClient] = useState(true);
+
+  useEffect(() => {
+    setIsClient(!localStorage.getItem("loggedInStation"));
+  }, [isClient]);
+
   return (
     <div>
       <Modal

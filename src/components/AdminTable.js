@@ -17,10 +17,11 @@ import { useState } from "react";
 import CrimeDetailsModal from "./CrimeDetailsModal";
 import ComplainsTableControl from "./ComplainsTableControl";
 
-export default function AdminTable({ tableData }) {
+export default function AdminTable({ data }) {
   const [crimeModal, setCrimeModal] = useState(false);
   const [currentCase, setCurrentCase] = useState(null);
   const [tableDisabled, setTableDisabled] = useState(false);
+  const [tableData, setTableData] = useState(data);
 
   const showCase = (item) => {
     setCurrentCase(item);
@@ -28,7 +29,10 @@ export default function AdminTable({ tableData }) {
   };
   return (
     <div>
-      <ComplainsTableControl setTableState={setTableDisabled} />
+      <ComplainsTableControl
+        setTableState={setTableDisabled}
+        setTableData={setTableData}
+      />
       <TableContainer>
         <Table variant="simple">
           {/* pointerEvents="none" */}
@@ -43,10 +47,7 @@ export default function AdminTable({ tableData }) {
           </Thead>
           <Tbody>
             {tableData?.map((item) => (
-              <Tr
-                key={item.caseId}
-                style={{ textTransform: "uppercase" }}
-              >
+              <Tr key={item.caseId} style={{ textTransform: "uppercase" }}>
                 <Td>{item.caseId}</Td>
                 <Td>{item.stationId}</Td>
                 <Td>{item.reporter}</Td>
