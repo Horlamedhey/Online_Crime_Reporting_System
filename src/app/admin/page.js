@@ -34,7 +34,7 @@ export default function AdminLogin() {
           p={2}
         >
           <Link
-            href={`/admin/complains?${caseStat.status}`}
+            href={`/admin/complains?status=${caseStat.status}`}
             style={{ textDecoration: "none", height: "100%" }}
           >
             <SimpleGrid columns={2} h="100%">

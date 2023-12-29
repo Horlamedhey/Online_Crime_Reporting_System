@@ -58,7 +58,6 @@ export default function ComplainsTableControl({ setTableState }) {
   ];
   const searchCrime = (query) => {
     setSearchLoading(true);
-    console.log(query);
     setTimeout(() => {
       setSearchLoading(false);
     }, 3000);
@@ -93,21 +92,11 @@ export default function ComplainsTableControl({ setTableState }) {
   }, [sortLoading, searchLoading, filterLoading, setTableState]);
 
   return (
-    <Flex
-      justifyContent="space-between"
-      p={2}
-      alignItems="center"
-    >
+    <Flex justifyContent="space-between" p={2} alignItems="center">
       <Box w="50%">
-        <Searchbar
-          isLoading={searchLoading}
-          searchCrime={searchCrime}
-        />
+        <Searchbar isLoading={searchLoading} searchCrime={searchCrime} />
       </Box>
-      <Flex
-        pr={1}
-        gap="20px"
-      >
+      <Flex pr={1} gap="20px">
         <Box>
           <Menu isLazy>
             <MenuButton
@@ -119,10 +108,7 @@ export default function ComplainsTableControl({ setTableState }) {
               {parsedFilter &&
                 `: ${parsedFilter.group} - ${parsedFilter.item.label}`}
             </MenuButton>
-            <MenuList
-              overflow="auto"
-              maxH="60vh"
-            >
+            <MenuList overflow="auto" maxH="60vh">
               {filters.map((u, i) => (
                 <React.Fragment key={u.title}>
                   <MenuOptionGroup
@@ -151,17 +137,10 @@ export default function ComplainsTableControl({ setTableState }) {
         </Box>
         <Flex gap={2}>
           <Menu isLazy>
-            <MenuButton
-              as={Button}
-              colorScheme="blue"
-              isLoading={sortLoading}
-            >
+            <MenuButton as={Button} colorScheme="blue" isLoading={sortLoading}>
               Sort by{sortLabel && `: ${sortLabel}`}
             </MenuButton>
-            <MenuList
-              overflow="auto"
-              maxH="60vh"
-            >
+            <MenuList overflow="auto" maxH="60vh">
               <MenuOptionGroup
                 type="radio"
                 value={sort}

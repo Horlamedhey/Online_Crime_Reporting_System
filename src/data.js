@@ -74,7 +74,7 @@ export const station = [
     password: "admin",
   },
   {
-    stationId: "00010",
+    stationId: "1010",
     stationName: "hamisu Command",
     password: "admin",
   },
