@@ -21,10 +21,15 @@ export default function Home() {
         .from("crimes")
         .select()
         .eq("caseId", parseInt(query));
-      console.log(searchResults);
-      setSearchRecord(searchResults);
-      setSearchRecordModal(true);
+      if (searchResults.length) {
+        setSearchRecord(searchResults);
+        setSearchRecordModal(true);
+      } else {
+        alert("No record found");
+        setIsLoading(false);
+      }
     }
+
     // setIsLoading(true);
     //  const foundRecord = record.find((record) => record.caseId == query);
 

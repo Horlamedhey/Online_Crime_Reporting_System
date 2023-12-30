@@ -18,10 +18,15 @@ import {
   AspectRatio,
   Image,
   Icon,
+  IconButton,
 } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
-import { PhoneIcon } from "@chakra-ui/icons";
+import { PhoneIcon, StarIcon } from "@chakra-ui/icons";
 import { badge } from "@/data";
+import { FaPhone, FaPlay } from "react-icons/fa";
+import { MdMyLocation } from "react-icons/md";
+import { CiLocationOn } from "react-icons/ci";
+
 export default function CrimeDetailsModal({ isOpen, closeModal, currentCase }) {
   const [isClient, setIsClient] = useState(true);
 
@@ -48,7 +53,7 @@ export default function CrimeDetailsModal({ isOpen, closeModal, currentCase }) {
               <ModalBody>
                 <Box>
                   <Flex justifyContent="space-between" gap={3}>
-                    <Box bg="red">
+                    <Box>
                       <Badge
                         variant="subtle"
                         colorScheme={badge[currentCase.status].color}
@@ -67,26 +72,30 @@ export default function CrimeDetailsModal({ isOpen, closeModal, currentCase }) {
                       >
                         {currentCase.natureOfCrime}
                       </Text>
+                      <Box>
+                        {" "}
+                        {/*piority */}
+                        <StarIcon />
+                        <StarIcon />
+                        <StarIcon />
+                        <StarIcon />
+                        <StarIcon />
+                      </Box>
                     </Box>
-                    <Box bg="yellow">
-                      <Flex lineHeight="22px" gap={3}>
-                        <Box display="flex">
-                          <Text
-                            fontSize="14px"
-                            fontWeight={400}
-                            color=" #9095A1FF"
-                          >
-                            Open Date:
-                          </Text>
-                          <Text
-                            fontWeight={700}
-                            fontSize="14px"
-                            color="222730FF"
-                          >
-                            {currentCase.createdAt}
-                          </Text>
-                        </Box>
-                        <Box display="flex">
+                    <Flex direction="column" justify="space-between">
+                      <Flex lineHeight="22px" gap={3} px="12px">
+                        <Text
+                          fontSize="14px"
+                          fontWeight={400}
+                          color=" #9095A1FF"
+                        >
+                          Open Date:
+                        </Text>
+                        <Text fontWeight={700} fontSize="14px" color="222730FF">
+                          {currentCase.createdAt}
+                        </Text>
+
+                        <Flex display="flex">
                           <Text
                             fontSize="14px"
                             fontWeight={400}
@@ -101,18 +110,21 @@ export default function CrimeDetailsModal({ isOpen, closeModal, currentCase }) {
                           >
                             {currentCase.resolvedAt}
                           </Text>
-                        </Box>
+                        </Flex>
                       </Flex>
-                      <Text
-                        fontWeight={700}
-                        fontSize="24px"
-                        color="#171A1FFF"
-                        lineHeight="36px"
-                      >
-                        {currentCase.reporter}
-                      </Text>
-                      <Flex lineHeight="22px" gap={3}>
-                        <Box display="flex">
+                      <Flex>
+                        <Text
+                          fontWeight={700}
+                          fontSize="24px"
+                          color="#171A1FFF"
+                          lineHeight="36px"
+                          px="12px"
+                        >
+                          {currentCase.reporter}
+                        </Text>
+                      </Flex>
+                      <Flex lineHeight="22px" gap={3} alignItems="end">
+                        <Box display="flex" me="4px" px="12px">
                           <Text
                             fontSize="14px"
                             fontWeight={400}
@@ -128,7 +140,7 @@ export default function CrimeDetailsModal({ isOpen, closeModal, currentCase }) {
                             {currentCase.caseId}
                           </Text>
                         </Box>
-                        <Box display="flex" px={2}>
+                        <Box display="flex" px="12px">
                           <Text
                             fontSize="14px"
                             fontWeight={400}
@@ -145,13 +157,14 @@ export default function CrimeDetailsModal({ isOpen, closeModal, currentCase }) {
                           </Text>
                         </Box>
                       </Flex>
-                    </Box>
+                    </Flex>
                   </Flex>
                   <Grid
                     h="350px"
                     templateRows="repeat(2, 1fr)"
                     templateColumns="repeat(8, 1fr)"
                     gap={4}
+                    my={3}
                   >
                     <GridItem rowSpan={2} colSpan={4}>
                       <AspectRatio maxW="560px" height="100%">
@@ -182,13 +195,19 @@ export default function CrimeDetailsModal({ isOpen, closeModal, currentCase }) {
                         {currentCase.crimeDescription}
                       </Text>
                       <Box mt="20px">
-                        <Text>
-                          <PhoneIcon mx={2} />
+                        <Text display="flex" alignItems="center" my="8px">
+                          <Icon as={FaPhone} w={6} h={5} />
                           {currentCase.phone}
                         </Text>
-                        <Text>{currentCase.address}</Text>
+                        <Text display="flex" alignItems="center" my="8px">
+                          <Icon as={CiLocationOn} w={6} h={5} />
+                          {currentCase.address}
+                        </Text>
                         {/**address */}
-                        <Text>{currentCase.location}</Text>
+                        <Text display="flex" alignItems="center" my="8px">
+                          <Icon as={MdMyLocation} w={6} h={5} />
+                          {currentCase.location}
+                        </Text>
                         {/**location */}
                       </Box>
                     </Box>
@@ -202,8 +221,39 @@ export default function CrimeDetailsModal({ isOpen, closeModal, currentCase }) {
                         Audio recordings
                       </Text>
                       <Flex flexDirection="column" gap={5}>
-                        <Progress hasStripe value={64} />
-                        <Progress hasStripe value={64} />
+                        <Box display="flex" alignItems="center">
+                          <IconButton
+                            bg="white"
+                            aria-label="Call Sage"
+                            fontSize="20px"
+                            size="sm"
+                            icon={<FaPlay />}
+                          />
+
+                          <Progress
+                            hasStripe
+                            value={64}
+                            width="100%"
+                            mx="4px"
+                          />
+                        </Box>
+
+                        <Box display="flex" alignItems="center">
+                          <IconButton
+                            bg="white"
+                            aria-label="Call Sage"
+                            fontSize="20px"
+                            size="sm"
+                            icon={<FaPlay />}
+                          />
+
+                          <Progress
+                            hasStripe
+                            value={64}
+                            width="100%"
+                            mx="4px"
+                          />
+                        </Box>
                         <Button
                           font-size="16px"
                           font-weight={400}
