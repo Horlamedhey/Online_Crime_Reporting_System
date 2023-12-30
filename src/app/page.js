@@ -7,27 +7,41 @@ import Searchbar from "@/components/Searchbar.js";
 import ModalComponent from "@/components/Modal.js";
 import record from "@/record.json";
 import CrimeDetailsModal from "@/components/CrimeDetailsModal.js";
+import supabase from "@/supabase";
 export default function Home() {
   const [searchRecord, setSearchRecord] = useState(null);
   const [searchRecordModal, setSearchRecordModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const searchCrime = (crimeCode) => {
-    setIsLoading(true);
-    const foundRecord = record.find((record) => record.caseId == crimeCode);
+  const searchCrime = async (query) => {
+    console.log(typeof parseInt(query));
 
-    if (foundRecord) {
-      setTimeout(() => {
-        setIsLoading(false);
-        setSearchRecord(foundRecord);
-        setSearchRecordModal(true);
-      }, 2000);
-    } else {
-      setIsLoading(false);
-      alert("not found");
+    if (query) {
+      setIsLoading(true);
+      const { data: searchResults } = await supabase
+        .from("crimes")
+        .select()
+        .eq("caseId", parseInt(query));
+      console.log(searchResults);
+      setSearchRecord(searchResults);
+      setSearchRecordModal(true);
     }
+    // setIsLoading(true);
+    //  const foundRecord = record.find((record) => record.caseId == query);
+
+    // if (foundRecord) {
+    //   setTimeout(() => {
+    //     setIsLoading(false);
+    //     setSearchRecord(foundRecord);
+    //     setSearchRecordModal(true);
+    //   }, 2000);
+    // } else {
+    //   setIsLoading(false);
+    //   alert("not found");
+    // }
 
     //TODO:search a crime using crime code
   };
+  console.log(searchRecord);
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -42,10 +56,7 @@ export default function Home() {
         />
         <div className={styles.overlay}>
           <div>
-            <Searchbar
-              searchCrime={searchCrime}
-              isLoading={isLoading}
-            />
+            <Searchbar searchCrime={searchCrime} isLoading={isLoading} />
             <Button
               _hover={{ bg: "#fff", color: "blue" }}
               fontSize="3xl"
