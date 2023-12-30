@@ -55,6 +55,8 @@ const {
   Checkbox,
   MenuOptionGroup,
   Progress,
+  AspectRatio,
+  Image,
 } = chakraTheme.components;
 const _theme = extendBaseTheme({
   components: {
@@ -112,6 +114,9 @@ const _theme = extendBaseTheme({
     MenuOptionGroup,
     Checkbox,
     Progress,
+    AspectRatio,
+    Image,
+    Icon,
   },
 });
 
