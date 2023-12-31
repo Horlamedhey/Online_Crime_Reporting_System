@@ -18,7 +18,11 @@ export default function Searchbar({
     setTableControl(document.getElementById("tableControl"));
   }, [tableControl]);
   return (
-    <Flex alignItems="center" gap="10px" w="100%">
+    <Flex
+      align="center"
+      gap="10px"
+      w="100%"
+    >
       <Input
         placeholder="Search crime status"
         size="lg"

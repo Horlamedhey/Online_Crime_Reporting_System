@@ -57,6 +57,7 @@ const {
   Progress,
   AspectRatio,
   Image,
+  Img,
   IconButton,
 } = chakraTheme.components;
 const _theme = extendBaseTheme({
@@ -117,6 +118,7 @@ const _theme = extendBaseTheme({
     Progress,
     AspectRatio,
     Image,
+    Img,
     Icon,
     IconButton,
   },

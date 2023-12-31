@@ -1,66 +1,20 @@
-"use client";
-import { SimpleGrid, Card, Flex, GridItem } from "@chakra-ui/react";
-import { Link } from "@chakra-ui/next-js";
-import { ArrowForwardIcon } from "@chakra-ui/icons";
-import { badge } from "@/data.js";
 import supabase from "@/supabase";
-// import { useEffect, useState } from "react";
-export default function AdminLogin() {
-  const caseStats = [
-    {
-      status: "all",
-      count: 320,
-    },
-    {
-      status: "open",
-      count: 320,
-    },
-    {
-      status: "pending",
-      count: 2828,
-    },
-    {
-      status: "resolved",
-      count: 390,
-    },
-  ];
-  return (
-    <SimpleGrid gap={2} p={2} h="100%" rows={2} columns={2}>
-      {caseStats.map((caseStat, i) => (
-        <Card
-          key={caseStat.status}
-          bg={badge[caseStat.status].colorVariant}
-          color="#fff"
-          fontWeight="bold"
-          fontSize="5xl"
-          p={2}
-        >
-          <Link
-            href={`/admin/complains?status=${caseStat.status}`}
-            style={{ textDecoration: "none", height: "100%" }}
-          >
-            <SimpleGrid columns={2} h="100%">
-              <SimpleGrid rows={2}>
-                <GridItem alignItems="center" justifyContent="center" h="100%">
-                  {badge[caseStat.status].label}
-                </GridItem>
-                <GridItem
-                  alignItems="center"
-                  justifyContent="center"
-                  h="100%"
-                  fontSize="7xl"
-                >
-                  {caseStat.count}
-                </GridItem>
-              </SimpleGrid>
-              <Flex alignItems="center" justifyContent="center" h="100%">
-                {/* <Icon as={ArrowForwardIcon} color="yellow.500" /> */}
-                <ArrowForwardIcon />
-              </Flex>
-            </SimpleGrid>
-          </Link>
-        </Card>
-      ))}
-    </SimpleGrid>
-  );
+import StatusGrid from "@/components/StatusGrid";
+export default async function AdminLogin() {
+  // TODO: !Remove these comments, I only left them for you to understand what I expected you to do BeforeUnloadEvent. But I have done the real thing that we were gonna use in the end
+  // const supabaseQuery = supabase
+  //   .from("crimes")
+  //   .select("*", { head: true, count: "exact" });
+  // const { count: open } = await supabaseQuery.eq("status", "open");
+  // const { count: pending } = await supabaseQuery.eq("status", "pending");
+  // const { count: resolved } = await supabaseQuery.eq("status", "resolved");
+
+  const { data } = await supabase.rpc("count_cases");
+  const caseCounts = data.map(({ case_count, ...rest }) => ({
+    ...rest,
+    count: case_count,
+  }));
+  const totalCount = caseCounts.reduce((val, v) => val + v.count, 0);
+  const caseStats = [{ status: "all", count: totalCount }, ...caseCounts];
+  return <StatusGrid caseStats={caseStats} />;
 }

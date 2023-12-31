@@ -147,9 +147,9 @@ export default function ComplainsTableControl({ setTableState, setTableData }) {
     <Box>
       <Flex
         id="tableControl"
-        justifyContent="space-between"
+        justify="space-between"
         p={2}
-        alignItems="center"
+        align="center"
       >
         <Box w="40%">
           <Searchbar
@@ -159,7 +159,10 @@ export default function ComplainsTableControl({ setTableState, setTableData }) {
             searchCrime={searchCrime}
           />
         </Box>
-        <Flex pr={1} gap="20px">
+        <Flex
+          pr={1}
+          gap="20px"
+        >
           <Box>
             <Menu isLazy>
               <MenuButton
@@ -171,7 +174,10 @@ export default function ComplainsTableControl({ setTableState, setTableData }) {
                 {parsedFilter &&
                   `: ${parsedFilter.group.label} - ${parsedFilter.item.label}`}
               </MenuButton>
-              <MenuList overflow="auto" maxH="60vh">
+              <MenuList
+                overflow="auto"
+                maxH="60vh"
+              >
                 {filters.map((u, i) => (
                   <React.Fragment>
                     <MenuOptionGroup
@@ -208,7 +214,10 @@ export default function ComplainsTableControl({ setTableState, setTableData }) {
               >
                 Sort by{sortLabel && `: ${sortLabel}`}
               </MenuButton>
-              <MenuList overflow="auto" maxH="60vh">
+              <MenuList
+                overflow="auto"
+                maxH="60vh"
+              >
                 <MenuOptionGroup
                   type="radio"
                   value={sort}
@@ -239,7 +248,10 @@ export default function ComplainsTableControl({ setTableState, setTableData }) {
           </Flex>
         </Flex>
       </Flex>
-      <Progress size="xs" isIndeterminate={tableLoading} />
+      <Progress
+        size="xs"
+        isIndeterminate={tableLoading}
+      />
     </Box>
   );
 }

@@ -47,7 +47,10 @@ export default function AdminTable({ data }) {
           </Thead>
           <Tbody>
             {tableData?.map((item) => (
-              <Tr key={item.caseId} style={{ textTransform: "uppercase" }}>
+              <Tr
+                key={item.caseId}
+                style={{ textTransform: "uppercase" }}
+              >
                 <Td>{item.caseId}</Td>
                 <Td>{item.stationId}</Td>
                 <Td>{item.reporter}</Td>
@@ -65,7 +68,7 @@ export default function AdminTable({ data }) {
                   </Badge>
                 </Td>
                 <Td>
-                  <Flex justifyContent="space-around">
+                  <Flex justify="space-around">
                     <Button
                       colorScheme="blue"
                       variant="link"

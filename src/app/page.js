@@ -13,16 +13,14 @@ export default function Home() {
   const [searchRecordModal, setSearchRecordModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const searchCrime = async (query) => {
-    console.log(typeof parseInt(query));
-
     if (query) {
       setIsLoading(true);
-      const { data: searchResults } = await supabase
+      const { data } = await supabase
         .from("crimes")
         .select()
         .eq("caseId", parseInt(query));
-      if (searchResults.length) {
-        setSearchRecord(searchResults);
+      if (data.length) {
+        setSearchRecord(data[0]);
         setSearchRecordModal(true);
         setIsLoading(false);
       } else {
@@ -30,22 +28,6 @@ export default function Home() {
         setIsLoading(false);
       }
     }
-
-    // setIsLoading(true);
-    //  const foundRecord = record.find((record) => record.caseId == query);
-
-    // if (foundRecord) {
-    //   setTimeout(() => {
-    //     setIsLoading(false);
-    //     setSearchRecord(foundRecord);
-    //     setSearchRecordModal(true);
-    //   }, 2000);
-    // } else {
-    //   setIsLoading(false);
-    //   alert("not found");
-    // }
-
-    //TODO:search a crime using crime code
   };
 
   const [isOpen, setIsOpen] = useState(false);
@@ -62,7 +44,10 @@ export default function Home() {
         />
         <div className={styles.overlay}>
           <div>
-            <Searchbar searchCrime={searchCrime} isLoading={isLoading} />
+            <Searchbar
+              searchCrime={searchCrime}
+              isLoading={isLoading}
+            />
             <Button
               _hover={{ bg: "#fff", color: "blue" }}
               fontSize="3xl"
