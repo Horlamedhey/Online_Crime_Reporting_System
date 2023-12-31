@@ -17,6 +17,8 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { natureOfCrime } from "@/data.js";
+import supabase from "@/supabase";
+
 export default function ModalComponent({ classes, openModal, closeModal }) {
   const testRecord = {
     caseId: 1000,
@@ -36,7 +38,40 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
   };
   const [loading, setLoadingState] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const submitReport = () => {
+  const [formData, setFormData] = useState({
+    reporter: "",
+    phone: "",
+    address: "",
+    crimeDescription: "",
+  });
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+
+    setFormData((input) => ({
+      ...input,
+      [name]: value,
+    }));
+    console.log(formData.reporter);
+  };
+
+  const submitReport = async () => {
+    console.log(formData.address);
+    const { data, error } = await supabase
+      .from("crimes")
+      .insert([
+        {
+          reporter: formData.reporter,
+          address: formData.address,
+          crimeDescription: formData.crimeDescription,
+        },
+      ])
+      .select();
+    if (error) {
+      console.error("Error submitting form data:", error.message);
+    } else {
+      console.log("Form data submitted successfully:", data);
+    }
+
     const existingRecords = localStorage.getItem("record");
     const parsedExistingRecords = existingRecords
       ? JSON.parse(existingRecords)
@@ -68,16 +103,34 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
             <ModalBody className={classes}>
               <FormControl id="name" mb="4">
                 <FormLabel>Name</FormLabel>
-                <Input type="text" placeholder="Enter your name" />
+                <Input
+                  type="text"
+                  placeholder="Enter your name"
+                  name="reporter"
+                  value={formData.reporter}
+                  onChange={handleChange}
+                />
               </FormControl>
 
               <FormControl id="phone" mb="4">
                 <FormLabel>Phone</FormLabel>
-                <Input type="tel" placeholder="Phone number" />
+                <Input
+                  type="tel"
+                  placeholder="Phone number"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                />
               </FormControl>
               <FormControl id="address" mb="4">
                 <FormLabel>Address</FormLabel>
-                <Input type="text" placeholder="Enter your Address" />
+                <Input
+                  type="text"
+                  placeholder="Enter your Address"
+                  name="address"
+                  value={formData.address}
+                  onChange={handleChange}
+                />
               </FormControl>
               <FormControl id="location" mb="4">
                 <FormLabel>Location</FormLabel>
@@ -97,7 +150,12 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
               </FormControl>
               <FormControl id="crimeDescription" mb="4">
                 <FormLabel>Crime description</FormLabel>
-                <Textarea placeholder="Enter your report" />
+                <Textarea
+                  placeholder="Enter your report"
+                  name="crimeDescription"
+                  value={formData.crimeDescription}
+                  onChange={handleChange}
+                />
               </FormControl>
               <FormControl id="voiceNote" mb="4">
                 <FormLabel>Voice note</FormLabel>

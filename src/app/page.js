@@ -24,6 +24,7 @@ export default function Home() {
       if (searchResults.length) {
         setSearchRecord(searchResults);
         setSearchRecordModal(true);
+        setIsLoading(false);
       } else {
         alert("No record found");
         setIsLoading(false);
@@ -46,7 +47,7 @@ export default function Home() {
 
     //TODO:search a crime using crime code
   };
-  console.log(searchRecord);
+
   const [isOpen, setIsOpen] = useState(false);
 
   return (

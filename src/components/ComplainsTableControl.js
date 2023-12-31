@@ -26,9 +26,10 @@ import React, { useEffect, useState } from "react";
 export default function ComplainsTableControl({ setTableState, setTableData }) {
   const [filter, setFilter] = useState("");
   const [parsedFilter, setParsedFilter] = useState(null);
+
   const [sort, setSort] = useState("");
   const [sortLabel, setSortLabel] = useState("");
-  const [descending, setDescending] = useState(false);
+  const [descending, setDescending] = useState(!false);
   const [tableLoading, setTableLoading] = useState(false);
   const [searchLoading, setSearchLoading] = useState(false);
   const [filterLoading, setFilterLoading] = useState(false);
@@ -38,10 +39,12 @@ export default function ComplainsTableControl({ setTableState, setTableData }) {
     setTableLoading(searchLoading || filterLoading || sortLoading);
   }, [searchLoading, filterLoading, sortLoading]);
 
-  const statuses = Object.entries(badgeData).map(([key, val]) => ({
-    label: val.label,
-    val: key,
-  }));
+  const statuses = Object.entries(badgeData)
+    .map(([key, val]) => ({
+      label: val.label,
+      val: key,
+    }))
+    .filter((v) => v.val != "all");
 
   const noc = natureOfCrime.map((v) => ({ label: v, val: v }));
   const stationData = station.map((v) => ({
@@ -51,53 +54,81 @@ export default function ComplainsTableControl({ setTableState, setTableData }) {
 
   const filters = [
     {
-      title: "Status",
+      group: { label: "Status", val: "status" },
       items: statuses,
     },
     {
-      title: "Nature of crime ",
+      group: { label: "Nature of crime", val: "natureOfCrime" },
       items: noc,
     },
     {
-      title: "Station Id",
+      group: { label: "Station Id", val: "stationId" },
       items: stationData,
     },
   ];
 
+  const supabaseQuery = supabase.from("crimes").select();
+
+  // const { data, error } = await supabase
+  // .from('countries')
+  // .select('id', 'name')
+  // .order('id', { ascending: false })
+
   const fetchCrime = async () => {
     setSearchLoading(true);
 
-    const { data: searchResults } = await supabase.from("crimes").select();
+    const { data: searchResults } = await supabaseQuery;
 
     setTableData(searchResults);
     setSearchLoading(false);
   };
+
   const searchCrime = async (query) => {
     if (query) {
       setSearchLoading(true);
-      const { data: searchResults } = await supabase
-        .from("crimes")
-        .select()
-        .textSearch("fts", query);
-      setTableData(searchResults);
+      if (parseInt(query)) {
+        const { data: searchResults } = await supabaseQuery.eq("caseId", query);
+        setTableData(searchResults);
+      } else {
+        const { data: searchResults } = await supabaseQuery.textSearch(
+          "fts",
+          query
+        );
+        setTableData(searchResults);
+      }
       setSearchLoading(false);
     } else fetchCrime();
+  };
+  const filterCrime = async () => {
+    setFilterLoading(true);
+    const { data } = await supabaseQuery.eq(
+      parsedFilter.group.val,
+      parsedFilter.item.val
+    );
+    setTableData(data);
+    setFilterLoading(false);
   };
 
   useEffect(() => {
     if (filter) {
-      setFilterLoading(true);
-      console.log("hi");
-      setTimeout(() => {
-        setFilterLoading(false);
-      }, 3000);
+      filterCrime();
     }
   }, [filter]);
 
+  const sortCrime = async (column) => {
+    setSortLoading(true);
+    const { data } = await supabase
+      .from("crimes")
+      .select()
+      .order(column, { ascending: descending });
+
+    setTableData(data);
+    setSortLoading(false);
+  };
   useEffect(() => {
     if (sort) {
-      setSortLoading(true);
-      console.log("query");
+      sortCrime(sort);
+
       setTimeout(() => {
         setSortLoading(false);
       }, 3000);
@@ -138,24 +169,25 @@ export default function ComplainsTableControl({ setTableState, setTableData }) {
               >
                 Filter by
                 {parsedFilter &&
-                  `: ${parsedFilter.group} - ${parsedFilter.item.label}`}
+                  `: ${parsedFilter.group.label} - ${parsedFilter.item.label}`}
               </MenuButton>
               <MenuList overflow="auto" maxH="60vh">
                 {filters.map((u, i) => (
-                  <React.Fragment key={u.title}>
+                  <React.Fragment>
                     <MenuOptionGroup
+                      key={u.group.label}
                       type="radio"
                       value={filter}
                       onChange={(currFilter) => {
                         setFilter(currFilter);
                         setParsedFilter(JSON.parse(currFilter));
                       }}
-                      title={u.title}
+                      title={u.group.label}
                     >
                       {u.items.map((v) => (
                         <MenuItemOption
                           key={v.label}
-                          value={JSON.stringify({ group: u.title, item: v })}
+                          value={JSON.stringify({ group: u.group, item: v })}
                         >
                           {v.label}
                         </MenuItemOption>
@@ -186,7 +218,9 @@ export default function ComplainsTableControl({ setTableState, setTableData }) {
                   {sortOptions.map((sortOption, i) => (
                     <MenuItemOption
                       key={sortOption.title}
-                      onClick={() => setSortLabel(sortOptions[i].title)}
+                      onClick={() => {
+                        setSortLabel(sortOptions[i].title);
+                      }}
                       value={sortOption.value}
                     >
                       {sortOption.title}

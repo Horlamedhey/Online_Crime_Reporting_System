@@ -3,6 +3,8 @@ import { SimpleGrid, Card, Flex, GridItem } from "@chakra-ui/react";
 import { Link } from "@chakra-ui/next-js";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 import { badge } from "@/data.js";
+import supabase from "@/supabase";
+// import { useEffect, useState } from "react";
 export default function AdminLogin() {
   const caseStats = [
     {
@@ -24,7 +26,7 @@ export default function AdminLogin() {
   ];
   return (
     <SimpleGrid gap={2} p={2} h="100%" rows={2} columns={2}>
-      {caseStats.map((caseStat) => (
+      {caseStats.map((caseStat, i) => (
         <Card
           key={caseStat.status}
           bg={badge[caseStat.status].colorVariant}

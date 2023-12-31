@@ -18,7 +18,7 @@ export const natureOfCrime = [
   "Homicide",
   "Killing Spree",
   "Rape",
-  "shopLifting",
+  "Shop-lifting",
   "Assault Robbery",
   "Kidnapping",
   "Domestic threat",
