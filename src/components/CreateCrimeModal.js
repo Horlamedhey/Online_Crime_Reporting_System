@@ -22,17 +22,23 @@ import {
   Box,
   Image,
   Progress,
+  Grid,
+  GridItem,
+  AspectRatio,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { natureOfCrime } from "@/data.js";
 import supabase from "@/supabase";
+// import styles from "./page.module.css";
+import styles from "@/app/page.module.css";
 import { AudioRecorder, useAudioRecorder } from "react-audio-voice-recorder";
-
+import { VoiceRecorder } from "react-voice-recorder-player";
 export default function ModalComponent({ classes, openModal, closeModal }) {
   const [selectedImages, setSelectedImages] = useState([]);
-  const [selectedVideo, setSelectedVideo] = useState([]);
+  const [uploadedVideo, setUploadedVideo] = useState([]);
   const [selectedVoiceNote, setSelectedVoiceNote] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [imageLoading, setImageLoading] = useState(false);
+  const [videoLoading, setVideoLoading] = useState(false);
   const recorderControls = useAudioRecorder(
     {
       noiseSuppression: true,
@@ -49,30 +55,37 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
     // document.body.appendChild(audio);
   };
   const handleImageChange = (event) => {
-    setLoading(true);
+    setImageLoading(true);
     const images = event.target.files;
 
     if (images.length > 4) {
-      setLoading(false);
+      setImageLoading(false);
       alert(`You can only upload up maximum of 4 files.`);
       return;
     }
 
     // Use createObjectURL to generate a URL for the selected image
     for (let a = 0; a < images.length; a++) {
+      setImageLoading(true);
       const imageUrl = URL.createObjectURL(images[a]);
-      setSelectedImages((prevFiles) => [...prevFiles, imageUrl]);
+
+      setTimeout(() => {
+        setSelectedImages((prevFiles) => [...prevFiles, imageUrl]);
+        setImageLoading(false);
+      }, 2000);
     }
-    // }
-    // const imageUrl = URL.createObjectURL(images);
-    // setSelectedImages(imageUrl);
-
-    // setTimeout(() => {
-    //   setSelectedImages((prevFiles) => [...prevFiles, ...images]);
-    //   setLoading(false);
-    // }, 2000);
   };
+  const handleVideoChange = (event) => {
+    setVideoLoading(true);
+    const video = event.target.files[0];
+    const url = URL.createObjectURL(video);
 
+    setTimeout(() => {
+      setUploadedVideo(url);
+      setVideoLoading(false);
+    }, 2000);
+  };
+  console.log(uploadedVideo);
   const testRecord = {
     caseId: 1000,
     reporter: "Abdulazeez",
@@ -208,22 +221,26 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
             </FormControl>
             <FormControl id="voiceNote" mb="4">
               <FormLabel>Voice note</FormLabel>
-              <AudioRecorder
+              <VoiceRecorder onRecordingEnd={() => console.log("ase")} />
+              {/* <AudioRecorder
                 onRecordingComplete={(voiceNote) => addAudioElement(voiceNote)}
                 recorderControls={recorderControls}
-                downloadOnSavePress={true}
-                downloadFileExtension="mp3"
-              />
+                // downloadOnSavePress={true}
+                // downloadFileExtension="mp3"
+              /> */}
             </FormControl>
             {/* TODO make this space hidden if no file is available */}
             <FormControl id="evidence" mb="0">
               <FormLabel>Upload Evidence</FormLabel>
               {selectedImages && (
-                <Flex h="10vh">
+                <Grid templateColumns="repeat(4, 1fr)" gap={3}>
                   {selectedImages.map((images) => (
-                    <Image src={images} alt="Dan Abramov" mx={2} />
+                    <GridItem w="100%" h="12" bg="red">
+                      <Image objectFit="cover" src={images} alt="Dan Abramov" />
+                    </GridItem>
                   ))}
-                </Flex>
+                </Grid>
+                // </Box>
               )}
               <Flex
                 mt={1}
@@ -237,7 +254,7 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
                 rounded="md"
               >
                 <Stack spacing={1} textAlign="center">
-                  <Progress size="xs" isIndeterminate={loading} />
+                  <Progress size="xs" isIndeterminate={imageLoading} />
                   <Icon
                     mx="auto"
                     boxSize={12}
@@ -266,7 +283,8 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
                         color: "blue",
                       }}
                     >
-                      <span>Upload Images</span>
+                      <span> Upload Images</span>
+
                       <VisuallyHidden>
                         <Input
                           id="image-upload"
@@ -285,6 +303,16 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
                   </Text>
                 </Stack>
               </Flex>
+              {uploadedVideo && ( // This video will have equal sides
+                <AspectRatio
+                  my={2}
+                  // maxW="560px"
+                  ratio={3 / 2}
+                  display={uploadedVideo.length ? "block" : "none"}
+                >
+                  <iframe src={uploadedVideo} allowFullScreen />
+                </AspectRatio>
+              )}
               <Flex
                 mt={1}
                 justify="center"
@@ -297,7 +325,7 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
                 rounded="md"
               >
                 <Stack spacing={1} textAlign="center">
-                  <Progress size="xs" isIndeterminate />
+                  <Progress size="xs" isIndeterminate={videoLoading} />
                   <Icon
                     mx="auto"
                     boxSize={12}
@@ -332,6 +360,7 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
                           id="video-upload"
                           name="video-upload"
                           type="file"
+                          onChange={handleVideoChange}
                           accept="video/*"
                         />
                       </VisuallyHidden>
