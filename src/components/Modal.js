@@ -35,7 +35,7 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
   );
 
   const addAudioElement = (voiceNote) => {
-    const url = URL.createObjectURL(blob);
+    const url = URL.createObjectURL(voiceNote);
     console.log(url);
     // const audio = document.createElement("audio");
     // audio.src = url;
@@ -58,7 +58,6 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
     status: "resolved",
     createdAt: "2023-12-24",
   };
-  const [loading, setLoadingState] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     reporter: "",
@@ -104,7 +103,6 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
       setIsLoading(false);
       parsedExistingRecords.push(testRecord);
       localStorage.setItem("record", JSON.stringify(parsedExistingRecords));
-      //TODO kindly help explain this
       closeModal(false);
     }, 3000);
   };
@@ -118,78 +116,18 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader bg="blue.400" color="white">
+          <ModalHeader
+            bg="blue.400"
+            color="white"
+          >
             Report a Crime
           </ModalHeader>
           <ModalCloseButton />
-
-          {/* <ModalBody className={classes}>
-            <FormControl id="name" mb="4">
-              <FormLabel>Name</FormLabel>
-              <Input
-                type="text"
-                placeholder="Enter your name"
-                name="reporter"
-                value={formData.reporter}
-                onChange={handleChange}
-              />
-            </FormControl>
-
-            <FormControl id="phone" mb="4">
-              <FormLabel>Phone</FormLabel>
-              <Input
-                type="tel"
-                placeholder="Phone number"
-                name="phone"
-                value={formData.phone}
-                onChange={handleChange}
-              />
-            </FormControl>
-            <FormControl id="address" mb="4">
-              <FormLabel>Address</FormLabel>
-              <Input
-                type="text"
-                placeholder="Enter your Address"
-                name="address"
-                value={formData.address}
-                onChange={handleChange}
-              />
-            </FormControl>
-            <FormControl id="location" mb="4">
-              <FormLabel>Location</FormLabel>
-              <Input type="text" placeholder="Enter your Location" />
-            </FormControl>
-            <Center fontSize="2xl" mb="4">
-              Crime details
-            </Center>
-            <FormControl id="natureOfCrime" mb="4">
-              <FormLabel>Nature of Crime</FormLabel>
-              <Select placeholder="">
-                {natureOfCrime.map((value, key) => (
-                  <option key={key + 1}>{value}</option>
-                ))}
-              </Select>
-            </FormControl>
-            <FormControl id="crimeDescription" mb="4">
-              <FormLabel>Crime description</FormLabel>
-              <Textarea
-                placeholder="Enter your report"
-                name="crimeDescription"
-                value={formData.crimeDescription}
-                onChange={handleChange}
-              />
-            </FormControl>
-            <FormControl id="voiceNote" mb="4">
-              <FormLabel>Voice note</FormLabel>
-              <Input type="text" placeholder="voice note" />
-            </FormControl>
-            <FormControl id="evidence" mb="0">
-              <FormLabel>Upload Evidence</FormLabel>
-              <Input type="file" multiple="true" />
-            </FormControl>
-          </ModalBody> */}
           <ModalBody className={classes}>
-            <FormControl id="name" mb="4">
+            <FormControl
+              id="name"
+              mb="4"
+            >
               <FormLabel>Name</FormLabel>
               <Input
                 type="text"
@@ -200,7 +138,10 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
               />
             </FormControl>
 
-            <FormControl id="phone" mb="4">
+            <FormControl
+              id="phone"
+              mb="4"
+            >
               <FormLabel>Phone</FormLabel>
               <Input
                 type="tel"
@@ -210,7 +151,10 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
                 onChange={handleChange}
               />
             </FormControl>
-            <FormControl id="address" mb="4">
+            <FormControl
+              id="address"
+              mb="4"
+            >
               <FormLabel>Address</FormLabel>
               <Input
                 type="text"
@@ -220,14 +164,26 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
                 onChange={handleChange}
               />
             </FormControl>
-            <FormControl id="location" mb="4">
+            <FormControl
+              id="location"
+              mb="4"
+            >
               <FormLabel>Location</FormLabel>
-              <Input type="text" placeholder="Enter your Location" />
+              <Input
+                type="text"
+                placeholder="Enter your Location"
+              />
             </FormControl>
-            <Center fontSize="2xl" mb="4">
+            <Center
+              fontSize="2xl"
+              mb="4"
+            >
               Crime details
             </Center>
-            <FormControl id="natureOfCrime" mb="4">
+            <FormControl
+              id="natureOfCrime"
+              mb="4"
+            >
               <FormLabel>Nature of Crime</FormLabel>
               <Select placeholder="">
                 {natureOfCrime.map((value, key) => (
@@ -235,7 +191,10 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
                 ))}
               </Select>
             </FormControl>
-            <FormControl id="crimeDescription" mb="4">
+            <FormControl
+              id="crimeDescription"
+              mb="4"
+            >
               <FormLabel>Crime description</FormLabel>
               <Textarea
                 placeholder="Enter your report"
@@ -244,7 +203,10 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
                 onChange={handleChange}
               />
             </FormControl>
-            <FormControl id="voiceNote" mb="4">
+            <FormControl
+              id="voiceNote"
+              mb="4"
+            >
               <FormLabel>Voice note</FormLabel>
               <AudioRecorder
                 onRecordingComplete={(voiceNote) => addAudioElement(voiceNote)}
@@ -252,9 +214,11 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
                 downloadOnSavePress={true}
                 downloadFileExtension="mp3"
               />
-              {/* <Input type="text" placeholder="voice note" /> */}
             </FormControl>
-            <FormControl id="evidence" mb="0">
+            <FormControl
+              id="evidence"
+              mb="0"
+            >
               <FormLabel>Upload Evidence</FormLabel>
               <Flex
                 mt={1}
@@ -267,7 +231,10 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
                 borderColor="black"
                 rounded="md"
               >
-                <Stack spacing={1} textAlign="center">
+                <Stack
+                  spacing={1}
+                  textAlign="center"
+                >
                   <Icon
                     mx="auto"
                     boxSize={12}
@@ -284,7 +251,11 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
                       strokeLinejoin="round"
                     />
                   </Icon>
-                  <Flex fontSize="sm" color="gray.600" alignItems="baseline">
+                  <Flex
+                    fontSize="sm"
+                    color="gray.600"
+                    alignItems="baseline"
+                  >
                     <FormLabel
                       color="red"
                       htmlFor="image-upload"
@@ -308,7 +279,10 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
                     </FormLabel>
                     <Text>or drag and drop</Text>
                   </Flex>
-                  <Text fontSize="xs" color="gray.500">
+                  <Text
+                    fontSize="xs"
+                    color="gray.500"
+                  >
                     PNG, JPG, GIF up to 10MB
                   </Text>
                 </Stack>
@@ -324,7 +298,10 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
                 borderColor="black"
                 rounded="md"
               >
-                <Stack spacing={1} textAlign="center">
+                <Stack
+                  spacing={1}
+                  textAlign="center"
+                >
                   <Icon
                     mx="auto"
                     boxSize={12}
@@ -341,7 +318,11 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
                       strokeLinejoin="round"
                     />
                   </Icon>
-                  <Flex fontSize="sm" color="gray.600" alignItems="baseline">
+                  <Flex
+                    fontSize="sm"
+                    color="gray.600"
+                    alignItems="baseline"
+                  >
                     <FormLabel
                       color="red"
                       htmlFor="video-upload"
@@ -365,7 +346,10 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
                     </FormLabel>
                     <Text>or drag and drop</Text>
                   </Flex>
-                  <Text fontSize="xs" color="gray.500">
+                  <Text
+                    fontSize="xs"
+                    color="gray.500"
+                  >
                     PNG, JPG, GIF up to 10MB
                   </Text>
                 </Stack>
@@ -373,7 +357,11 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
             </FormControl>
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="red" mr={3} onClick={closeModal}>
+            <Button
+              colorScheme="red"
+              mr={3}
+              onClick={closeModal}
+            >
               Close
             </Button>
             <Button

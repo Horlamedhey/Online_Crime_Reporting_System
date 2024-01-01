@@ -26,7 +26,7 @@ export default function Chat({ classes, openModal, closeModal }) {
   //   const [loggedInUser, setLoggedInUser] = useState("me");
   //   i woild have use object to proper arrange it but its writing infinity loop
 
-  const user = !!localStorage.getItem("loggedInStation") ? "computer" : "me";
+  const user = localStorage.getItem("loggedInStation") ? "computer" : "me";
 
   const [messages, setMessages] = useState([
     { from: "computer", text: "Hi, My Name is HoneyChat" },
@@ -42,11 +42,6 @@ export default function Chat({ classes, openModal, closeModal }) {
 
     setMessages((old) => [...old, { from: user, text: data }]);
     setInputMessage("");
-
-    // setTimeout(() => {
-    //   setMessages((old) => [...old, { from: user, text: data }]);
-    // }, 1000);
-    // {i commented this coz its the one to rerender the page}
   };
 
   return (
@@ -59,8 +54,11 @@ export default function Chat({ classes, openModal, closeModal }) {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader bg="blue.400" color="white">
-            Report a Crime
+          <ModalHeader
+            bg="blue.400"
+            color="white"
+          >
+            Chat
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
@@ -71,7 +69,6 @@ export default function Chat({ classes, openModal, closeModal }) {
             <BodyChat
               messages={messages}
               user={user}
-              location={location}
               avatar={user}
             />
             {/* body chat end */}
@@ -83,11 +80,6 @@ export default function Chat({ classes, openModal, closeModal }) {
             />
             {/* footer ends here */}
           </ModalBody>
-          {/* <ModalFooter>
-            <Button colorScheme="red" mr={3} onClick={closeModal}>
-              Close
-            </Button>
-          </ModalFooter> */}
         </ModalContent>
       </Modal>
     </div>

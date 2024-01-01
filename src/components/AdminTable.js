@@ -14,6 +14,7 @@ import {
   Text,
   Box,
   Badge,
+  Show,
 } from "@chakra-ui/react";
 
 import { badge, tableHeaders } from "@/data.js";
@@ -103,7 +104,11 @@ export default function AdminTable({ data }) {
         </Table>
       </TableContainer> */}
 
-      <Flex w="full" alignItems="center" justifyContent="center">
+      <Flex
+        w="full"
+        alignItems="center"
+        justifyContent="center"
+      >
         <Stack
           direction={{
             base: "column",
@@ -113,47 +118,89 @@ export default function AdminTable({ data }) {
           overflowY="auto"
           maxH={`calc(100vh - 147px)`}
         >
+          <Show above="lg">
+            <SimpleGrid
+              spacingY={3}
+              columns={{
+                base: 1,
+                md: 8,
+              }}
+              w={{
+                base: 150,
+                md: "full",
+              }}
+              textTransform="uppercase"
+              color={"gray.500"}
+              py={{
+                base: 1,
+                md: 4,
+              }}
+              px={{
+                base: 2,
+                md: 4,
+              }}
+              fontSize="md"
+            >
+              {tableHeaders.map((header) => (
+                <Text
+                  key={header.title}
+                  fontWeight={700}
+                  color="black"
+                >
+                  {header.title}
+                </Text>
+              ))}
+              <Text></Text>
+            </SimpleGrid>
+          </Show>
           {tableData?.map((item) => (
             <Flex
+              key={item.caseId}
               direction={{
                 base: "row",
-                md: "column",
+                lg: "column",
               }}
             >
+              <Show below="lg">
+                <SimpleGrid
+                  spacingY={3}
+                  columns={{
+                    base: 1,
+                    lg: 8,
+                  }}
+                  w={{
+                    base: 150,
+                    lg: "full",
+                  }}
+                  textTransform="uppercase"
+                  color={"gray.500"}
+                  py={{
+                    base: 1,
+                    lg: 4,
+                  }}
+                  px={{
+                    base: 2,
+                    lg: 4,
+                  }}
+                  fontSize="md"
+                >
+                  {tableHeaders.map((header) => (
+                    <Text
+                      key={header.title}
+                      fontWeight={700}
+                      color="black"
+                    >
+                      {header.title}
+                    </Text>
+                  ))}
+                  <Text></Text>
+                </SimpleGrid>
+              </Show>
               <SimpleGrid
                 spacingY={3}
                 columns={{
                   base: 1,
-                  md: 8,
-                }}
-                w={{
-                  base: 150,
-                  md: "full",
-                }}
-                textTransform="uppercase"
-                color={"gray.500"}
-                py={{
-                  base: 1,
-                  md: 4,
-                }}
-                px={{
-                  base: 2,
-                  md: 4,
-                }}
-                fontSize="md"
-              >
-                {tableHeaders.map((headers) => (
-                  <Text fontWeight={700} color="black">
-                    {headers.title}
-                  </Text>
-                ))}
-                <Text></Text>
-              </SimpleGrid>
-              <SimpleGrid
-                spacingY={3}
-                columns={{
-                  base: 1,
-                  md: 8,
+                  lg: 8,
                 }}
                 w="full"
                 py={2}
@@ -164,7 +211,7 @@ export default function AdminTable({ data }) {
                 <Text>{item.reporter}</Text>
                 <Text>{item.address}</Text>
                 <Text>{item.natureOfCrime}</Text>
-                <Text>{item.createdAt}</Text>
+                <Text>{new Date(item.createdAt).toLocaleDateString()}</Text>
                 <Box>
                   <Badge
                     variant="subtle"
@@ -179,7 +226,7 @@ export default function AdminTable({ data }) {
                 <Flex
                   justify={{
                     base: "start",
-                    md: "space-around",
+                    lg: "space-around",
                   }}
                 >
                   <Button
