@@ -4,7 +4,7 @@ import styles from "./page.module.css";
 import { Button } from "@chakra-ui/react";
 import { useState } from "react";
 import Searchbar from "@/components/Searchbar.js";
-import ModalComponent from "@/components/Modal.js";
+import ModalComponent from "@/components/CreateCrimeModal.js";
 import record from "@/record.json";
 import CrimeDetailsModal from "@/components/CrimeDetailsModal.js";
 import supabase from "@/supabase";
@@ -44,10 +44,7 @@ export default function Home() {
         />
         <div className={styles.overlay}>
           <div>
-            <Searchbar
-              searchCrime={searchCrime}
-              isLoading={isLoading}
-            />
+            <Searchbar searchCrime={searchCrime} isLoading={isLoading} />
             <Button
               _hover={{ bg: "#fff", color: "blue" }}
               fontSize="3xl"

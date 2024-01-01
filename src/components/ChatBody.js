@@ -3,7 +3,7 @@ import { useEffect, useRef } from "react";
 import { natureOfCrime } from "@/data.js";
 import supabase from "@/supabase";
 
-export default function BodyChat({ messages, user, avatar }) {
+export default function ChatBody({ messages, user, avatar }) {
   // kindly explain useRef and useEffect
   const AlwaysScrollToBottom = () => {
     const elementRef = useRef();

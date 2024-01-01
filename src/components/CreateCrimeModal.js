@@ -19,6 +19,9 @@ import {
   Text,
   Stack,
   Icon,
+  Box,
+  Image,
+  Progress,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { natureOfCrime } from "@/data.js";
@@ -26,6 +29,10 @@ import supabase from "@/supabase";
 import { AudioRecorder, useAudioRecorder } from "react-audio-voice-recorder";
 
 export default function ModalComponent({ classes, openModal, closeModal }) {
+  const [selectedImages, setSelectedImages] = useState([]);
+  const [selectedVideo, setSelectedVideo] = useState([]);
+  const [selectedVoiceNote, setSelectedVoiceNote] = useState([]);
+  const [loading, setLoading] = useState(false);
   const recorderControls = useAudioRecorder(
     {
       noiseSuppression: true,
@@ -33,7 +40,6 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
     },
     (err) => console.table(err)
   );
-
   const addAudioElement = (voiceNote) => {
     const url = URL.createObjectURL(voiceNote);
     console.log(url);
@@ -42,6 +48,31 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
     // audio.controls = true;
     // document.body.appendChild(audio);
   };
+  const handleImageChange = (event) => {
+    setLoading(true);
+    const images = event.target.files;
+
+    if (images.length > 4) {
+      setLoading(false);
+      alert(`You can only upload up maximum of 4 files.`);
+      return;
+    }
+
+    // Use createObjectURL to generate a URL for the selected image
+    for (let a = 0; a < images.length; a++) {
+      const imageUrl = URL.createObjectURL(images[a]);
+      setSelectedImages((prevFiles) => [...prevFiles, imageUrl]);
+    }
+    // }
+    // const imageUrl = URL.createObjectURL(images);
+    // setSelectedImages(imageUrl);
+
+    // setTimeout(() => {
+    //   setSelectedImages((prevFiles) => [...prevFiles, ...images]);
+    //   setLoading(false);
+    // }, 2000);
+  };
+
   const testRecord = {
     caseId: 1000,
     reporter: "Abdulazeez",
@@ -116,18 +147,12 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader
-            bg="blue.400"
-            color="white"
-          >
+          <ModalHeader bg="blue.400" color="white">
             Report a Crime
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody className={classes}>
-            <FormControl
-              id="name"
-              mb="4"
-            >
+            <FormControl id="name" mb="4">
               <FormLabel>Name</FormLabel>
               <Input
                 type="text"
@@ -137,11 +162,7 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
                 onChange={handleChange}
               />
             </FormControl>
-
-            <FormControl
-              id="phone"
-              mb="4"
-            >
+            <FormControl id="phone" mb="4">
               <FormLabel>Phone</FormLabel>
               <Input
                 type="tel"
@@ -151,10 +172,7 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
                 onChange={handleChange}
               />
             </FormControl>
-            <FormControl
-              id="address"
-              mb="4"
-            >
+            <FormControl id="address" mb="4">
               <FormLabel>Address</FormLabel>
               <Input
                 type="text"
@@ -164,26 +182,14 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
                 onChange={handleChange}
               />
             </FormControl>
-            <FormControl
-              id="location"
-              mb="4"
-            >
+            <FormControl id="location" mb="4">
               <FormLabel>Location</FormLabel>
-              <Input
-                type="text"
-                placeholder="Enter your Location"
-              />
+              <Input type="text" placeholder="Enter your Location" />
             </FormControl>
-            <Center
-              fontSize="2xl"
-              mb="4"
-            >
+            <Center fontSize="2xl" mb="4">
               Crime details
             </Center>
-            <FormControl
-              id="natureOfCrime"
-              mb="4"
-            >
+            <FormControl id="natureOfCrime" mb="4">
               <FormLabel>Nature of Crime</FormLabel>
               <Select placeholder="">
                 {natureOfCrime.map((value, key) => (
@@ -191,10 +197,7 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
                 ))}
               </Select>
             </FormControl>
-            <FormControl
-              id="crimeDescription"
-              mb="4"
-            >
+            <FormControl id="crimeDescription" mb="4">
               <FormLabel>Crime description</FormLabel>
               <Textarea
                 placeholder="Enter your report"
@@ -203,10 +206,7 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
                 onChange={handleChange}
               />
             </FormControl>
-            <FormControl
-              id="voiceNote"
-              mb="4"
-            >
+            <FormControl id="voiceNote" mb="4">
               <FormLabel>Voice note</FormLabel>
               <AudioRecorder
                 onRecordingComplete={(voiceNote) => addAudioElement(voiceNote)}
@@ -215,11 +215,16 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
                 downloadFileExtension="mp3"
               />
             </FormControl>
-            <FormControl
-              id="evidence"
-              mb="0"
-            >
+            {/* TODO make this space hidden if no file is available */}
+            <FormControl id="evidence" mb="0">
               <FormLabel>Upload Evidence</FormLabel>
+              {selectedImages && (
+                <Flex h="10vh">
+                  {selectedImages.map((images) => (
+                    <Image src={images} alt="Dan Abramov" mx={2} />
+                  ))}
+                </Flex>
+              )}
               <Flex
                 mt={1}
                 justify="center"
@@ -231,10 +236,8 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
                 borderColor="black"
                 rounded="md"
               >
-                <Stack
-                  spacing={1}
-                  textAlign="center"
-                >
+                <Stack spacing={1} textAlign="center">
+                  <Progress size="xs" isIndeterminate={loading} />
                   <Icon
                     mx="auto"
                     boxSize={12}
@@ -251,39 +254,34 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
                       strokeLinejoin="round"
                     />
                   </Icon>
-                  <Flex
-                    fontSize="sm"
-                    color="gray.600"
-                    alignItems="baseline"
-                  >
+                  <Flex fontSize="sm" color="gray.600" alignItems="baseline">
                     <FormLabel
-                      color="red"
+                      color="blue.400"
                       htmlFor="image-upload"
                       cursor="pointer"
                       rounded="md"
                       fontSize="md"
                       pos="relative"
                       _hover={{
-                        color: "blue.400",
+                        color: "blue",
                       }}
                     >
-                      <span>Upload Image</span>
+                      <span>Upload Images</span>
                       <VisuallyHidden>
                         <Input
                           id="image-upload"
                           name="image-upload"
                           type="file"
                           accept="image/*"
+                          onChange={handleImageChange}
+                          multiple
                         />
                       </VisuallyHidden>
                     </FormLabel>
                     <Text>or drag and drop</Text>
                   </Flex>
-                  <Text
-                    fontSize="xs"
-                    color="gray.500"
-                  >
-                    PNG, JPG, GIF up to 10MB
+                  <Text fontSize="xs" color="gray.500">
+                    (Maximum of 4)
                   </Text>
                 </Stack>
               </Flex>
@@ -298,10 +296,8 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
                 borderColor="black"
                 rounded="md"
               >
-                <Stack
-                  spacing={1}
-                  textAlign="center"
-                >
+                <Stack spacing={1} textAlign="center">
+                  <Progress size="xs" isIndeterminate />
                   <Icon
                     mx="auto"
                     boxSize={12}
@@ -318,20 +314,16 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
                       strokeLinejoin="round"
                     />
                   </Icon>
-                  <Flex
-                    fontSize="sm"
-                    color="gray.600"
-                    alignItems="baseline"
-                  >
+                  <Flex fontSize="sm" color="gray.600" alignItems="baseline">
                     <FormLabel
-                      color="red"
+                      color="blue.400"
                       htmlFor="video-upload"
                       cursor="pointer"
                       rounded="md"
                       fontSize="md"
                       pos="relative"
                       _hover={{
-                        color: "blue.400",
+                        color: "blue",
                       }}
                     >
                       <span>Upload video</span>
@@ -346,22 +338,12 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
                     </FormLabel>
                     <Text>or drag and drop</Text>
                   </Flex>
-                  <Text
-                    fontSize="xs"
-                    color="gray.500"
-                  >
-                    PNG, JPG, GIF up to 10MB
-                  </Text>
                 </Stack>
               </Flex>
             </FormControl>
           </ModalBody>
           <ModalFooter>
-            <Button
-              colorScheme="red"
-              mr={3}
-              onClick={closeModal}
-            >
+            <Button colorScheme="red" mr={3} onClick={closeModal}>
               Close
             </Button>
             <Button

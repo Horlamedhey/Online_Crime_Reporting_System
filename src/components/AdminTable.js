@@ -32,24 +32,6 @@ export default function AdminTable({ data }) {
     setCurrentCase(item);
     setCrimeModal(true);
   };
-  const ase = [
-    {
-      name: "Segun Adebayo",
-      email: "sage@chakra.com",
-    },
-    {
-      name: "Josef Nikolas",
-      email: "Josef@mail.com",
-    },
-    {
-      name: "Lazar Nikolov",
-      email: "Lazar@mail.com",
-    },
-    {
-      name: "Abraham",
-      email: "abraham@anu.com",
-    },
-  ];
   return (
     <div>
       <ComplainsTableControl
@@ -57,58 +39,7 @@ export default function AdminTable({ data }) {
         setTableData={setTableData}
       />
 
-      {/* <TableContainer>
-        <Table variant="simple" size="sm">
-          <Thead>
-            <Tr>
-              {tableHeaders.map((headers) => (
-                <Th key={headers.value}>{headers.title}</Th>
-              ))}
-              <Th></Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {tableData?.map((item) => (
-              <Tr key={item.caseId} style={{ textTransform: "uppercase" }}>
-                <Td>{item.caseId}</Td>
-                <Td>{item.stationId}</Td>
-                <Td>{item.reporter}</Td>
-                <Td>{item.address}</Td>
-                <Td>{item.natureOfCrime}</Td>
-                <Td>{item.createdAt}</Td>
-                <Td>
-                  <Badge
-                    variant="subtle"
-                    colorScheme={badge[item.status].color}
-                    p={2}
-                    borderRadius="lg"
-                  >
-                    {badge[item.status].label}
-                  </Badge>
-                </Td>
-                <Td>
-                  <Flex justify="space-around">
-                    <Button
-                      colorScheme="blue"
-                      variant="link"
-                      onClick={() => showCase(item)}
-                      isDisabled={tableDisabled}
-                    >
-                      View
-                    </Button>
-                  </Flex>
-                </Td>
-              </Tr>
-            ))}
-          </Tbody>
-        </Table>
-      </TableContainer> */}
-
-      <Flex
-        w="full"
-        alignItems="center"
-        justifyContent="center"
-      >
+      <Flex w="full" alignItems="center" justifyContent="center">
         <Stack
           direction={{
             base: "column",
@@ -142,11 +73,7 @@ export default function AdminTable({ data }) {
               fontSize="md"
             >
               {tableHeaders.map((header) => (
-                <Text
-                  key={header.title}
-                  fontWeight={700}
-                  color="black"
-                >
+                <Text key={header.title} fontWeight={700} color="black">
                   {header.title}
                 </Text>
               ))}
@@ -185,11 +112,7 @@ export default function AdminTable({ data }) {
                   fontSize="md"
                 >
                   {tableHeaders.map((header) => (
-                    <Text
-                      key={header.title}
-                      fontWeight={700}
-                      color="black"
-                    >
+                    <Text key={header.title} fontWeight={700} color="black">
                       {header.title}
                     </Text>
                   ))}

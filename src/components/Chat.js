@@ -17,12 +17,12 @@ import {
 import { useState } from "react";
 
 import supabase from "@/supabase";
-import HeaderChat from "./HeaderChat";
-import FooterChat from "./FooterChat";
-import BodyChat from "./BodyChat";
+import ChatHeader from "./ChatHeader";
+import ChatFooter from "./ChatFooter";
+import ChatBody from "./ChatBody";
 export default function Chat({ classes, openModal, closeModal }) {
   const [inputMessage, setInputMessage] = useState("");
-  console.log(inputMessage);
+
   //   const [loggedInUser, setLoggedInUser] = useState("me");
   //   i woild have use object to proper arrange it but its writing infinity loop
 
@@ -54,26 +54,19 @@ export default function Chat({ classes, openModal, closeModal }) {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader
-            bg="blue.400"
-            color="white"
-          >
+          <ModalHeader bg="blue.400" color="white">
             Chat
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             {/* header compenet starts */}
-            <HeaderChat avatar={user} />
+            <ChatHeader avatar={user} />
             {/* header compenet ends */}
             {/* body chat start */}
-            <BodyChat
-              messages={messages}
-              user={user}
-              avatar={user}
-            />
+            <ChatBody messages={messages} user={user} avatar={user} />
             {/* body chat end */}
             {/*footer starts here */}
-            <FooterChat
+            <ChatFooter
               inputMessage={inputMessage}
               setInputMessage={setInputMessage}
               handleSendMessage={handleSendMessage}

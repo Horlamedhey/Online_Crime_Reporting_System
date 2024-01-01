@@ -16,7 +16,7 @@ import {
 import { useState } from "react";
 import { natureOfCrime } from "@/data.js";
 import supabase from "@/supabase";
-export default function HeaderChat({ avatar }) {
+export default function ChatHeader({ avatar }) {
   return (
     <Flex w="100%">
       <Avatar
