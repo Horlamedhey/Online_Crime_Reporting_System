@@ -59,6 +59,9 @@ const {
   Image,
   Img,
   IconButton,
+  AvatarBadge,
+  VisuallyHidden,
+  Stack,
 } = chakraTheme.components;
 const _theme = extendBaseTheme({
   components: {
@@ -121,6 +124,9 @@ const _theme = extendBaseTheme({
     Img,
     Icon,
     IconButton,
+    AvatarBadge,
+    VisuallyHidden,
+    Stack,
   },
 });
 

@@ -14,6 +14,11 @@ import {
   FormControl,
   FormLabel,
   Center,
+  Flex,
+  VisuallyHidden,
+  Text,
+  Stack,
+  Icon,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { natureOfCrime } from "@/data.js";
@@ -99,88 +104,264 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
             Report a Crime
           </ModalHeader>
           <ModalCloseButton />
-          <form>
-            <ModalBody className={classes}>
-              <FormControl id="name" mb="4">
-                <FormLabel>Name</FormLabel>
-                <Input
-                  type="text"
-                  placeholder="Enter your name"
-                  name="reporter"
-                  value={formData.reporter}
-                  onChange={handleChange}
-                />
-              </FormControl>
 
-              <FormControl id="phone" mb="4">
-                <FormLabel>Phone</FormLabel>
-                <Input
-                  type="tel"
-                  placeholder="Phone number"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                />
-              </FormControl>
-              <FormControl id="address" mb="4">
-                <FormLabel>Address</FormLabel>
-                <Input
-                  type="text"
-                  placeholder="Enter your Address"
-                  name="address"
-                  value={formData.address}
-                  onChange={handleChange}
-                />
-              </FormControl>
-              <FormControl id="location" mb="4">
-                <FormLabel>Location</FormLabel>
-                <Input type="text" placeholder="Enter your Location" />
-              </FormControl>
-              <Center fontSize="2xl" mb="4">
-                Crime details
-              </Center>
-              <FormControl id="natureOfCrime" mb="4">
-                <FormLabel>Nature of Crime</FormLabel>
-                <Select placeholder="">
-                  {natureOfCrime.map((value, key) => (
-                    <option key={key + 1}>{value}</option>
-                  ))}
-                  {/* TODO how to make another field show after the user select other */}
-                </Select>
-              </FormControl>
-              <FormControl id="crimeDescription" mb="4">
-                <FormLabel>Crime description</FormLabel>
-                <Textarea
-                  placeholder="Enter your report"
-                  name="crimeDescription"
-                  value={formData.crimeDescription}
-                  onChange={handleChange}
-                />
-              </FormControl>
-              <FormControl id="voiceNote" mb="4">
-                <FormLabel>Voice note</FormLabel>
-                <Input type="text" placeholder="voice note" />
-              </FormControl>
-              <FormControl id="evidence" mb="0">
-                <FormLabel>Upload Evidence</FormLabel>
-                <Input type="file" multiple="true" />
-              </FormControl>
-            </ModalBody>
-            <ModalFooter>
-              <Button colorScheme="red" mr={3} onClick={closeModal}>
-                Close
-              </Button>
-              <Button
-                type="button"
-                colorScheme="blue"
-                onClick={submitReport}
-                isLoading={isLoading}
-                loadingText="Submitting"
+          {/* <ModalBody className={classes}>
+            <FormControl id="name" mb="4">
+              <FormLabel>Name</FormLabel>
+              <Input
+                type="text"
+                placeholder="Enter your name"
+                name="reporter"
+                value={formData.reporter}
+                onChange={handleChange}
+              />
+            </FormControl>
+
+            <FormControl id="phone" mb="4">
+              <FormLabel>Phone</FormLabel>
+              <Input
+                type="tel"
+                placeholder="Phone number"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+              />
+            </FormControl>
+            <FormControl id="address" mb="4">
+              <FormLabel>Address</FormLabel>
+              <Input
+                type="text"
+                placeholder="Enter your Address"
+                name="address"
+                value={formData.address}
+                onChange={handleChange}
+              />
+            </FormControl>
+            <FormControl id="location" mb="4">
+              <FormLabel>Location</FormLabel>
+              <Input type="text" placeholder="Enter your Location" />
+            </FormControl>
+            <Center fontSize="2xl" mb="4">
+              Crime details
+            </Center>
+            <FormControl id="natureOfCrime" mb="4">
+              <FormLabel>Nature of Crime</FormLabel>
+              <Select placeholder="">
+                {natureOfCrime.map((value, key) => (
+                  <option key={key + 1}>{value}</option>
+                ))}
+              </Select>
+            </FormControl>
+            <FormControl id="crimeDescription" mb="4">
+              <FormLabel>Crime description</FormLabel>
+              <Textarea
+                placeholder="Enter your report"
+                name="crimeDescription"
+                value={formData.crimeDescription}
+                onChange={handleChange}
+              />
+            </FormControl>
+            <FormControl id="voiceNote" mb="4">
+              <FormLabel>Voice note</FormLabel>
+              <Input type="text" placeholder="voice note" />
+            </FormControl>
+            <FormControl id="evidence" mb="0">
+              <FormLabel>Upload Evidence</FormLabel>
+              <Input type="file" multiple="true" />
+            </FormControl>
+          </ModalBody> */}
+          <ModalBody className={classes}>
+            <FormControl id="name" mb="4">
+              <FormLabel>Name</FormLabel>
+              <Input
+                type="text"
+                placeholder="Enter your name"
+                name="reporter"
+                value={formData.reporter}
+                onChange={handleChange}
+              />
+            </FormControl>
+
+            <FormControl id="phone" mb="4">
+              <FormLabel>Phone</FormLabel>
+              <Input
+                type="tel"
+                placeholder="Phone number"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+              />
+            </FormControl>
+            <FormControl id="address" mb="4">
+              <FormLabel>Address</FormLabel>
+              <Input
+                type="text"
+                placeholder="Enter your Address"
+                name="address"
+                value={formData.address}
+                onChange={handleChange}
+              />
+            </FormControl>
+            <FormControl id="location" mb="4">
+              <FormLabel>Location</FormLabel>
+              <Input type="text" placeholder="Enter your Location" />
+            </FormControl>
+            <Center fontSize="2xl" mb="4">
+              Crime details
+            </Center>
+            <FormControl id="natureOfCrime" mb="4">
+              <FormLabel>Nature of Crime</FormLabel>
+              <Select placeholder="">
+                {natureOfCrime.map((value, key) => (
+                  <option key={key + 1}>{value}</option>
+                ))}
+              </Select>
+            </FormControl>
+            <FormControl id="crimeDescription" mb="4">
+              <FormLabel>Crime description</FormLabel>
+              <Textarea
+                placeholder="Enter your report"
+                name="crimeDescription"
+                value={formData.crimeDescription}
+                onChange={handleChange}
+              />
+            </FormControl>
+            <FormControl id="voiceNote" mb="4">
+              <FormLabel>Voice note</FormLabel>
+              <Input type="text" placeholder="voice note" />
+            </FormControl>
+            <FormControl id="evidence" mb="0">
+              <FormLabel>Upload Evidence</FormLabel>
+              <Flex
+                mt={1}
+                justify="center"
+                px={4}
+                pt={3}
+                pb={4}
+                borderWidth={2}
+                borderStyle="dashed"
+                borderColor="black"
+                rounded="md"
               >
-                Submit
-              </Button>
-            </ModalFooter>
-          </form>
+                <Stack spacing={1} textAlign="center">
+                  <Icon
+                    mx="auto"
+                    boxSize={12}
+                    color="gray.400"
+                    stroke="currentColor"
+                    fill="none"
+                    viewBox="0 0 48 48"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </Icon>
+                  <Flex fontSize="sm" color="gray.600" alignItems="baseline">
+                    <FormLabel
+                      color="red"
+                      htmlFor="image-upload"
+                      cursor="pointer"
+                      rounded="md"
+                      fontSize="md"
+                      pos="relative"
+                      _hover={{
+                        color: "blue.400",
+                      }}
+                    >
+                      <span>Upload Image</span>
+                      <VisuallyHidden>
+                        <Input
+                          id="image-upload"
+                          name="image-upload"
+                          type="file"
+                          accept="image/*"
+                        />
+                      </VisuallyHidden>
+                    </FormLabel>
+                    <Text>or drag and drop</Text>
+                  </Flex>
+                  <Text fontSize="xs" color="gray.500">
+                    PNG, JPG, GIF up to 10MB
+                  </Text>
+                </Stack>
+              </Flex>
+              <Flex
+                mt={1}
+                justify="center"
+                px={4}
+                pt={3}
+                pb={4}
+                borderWidth={2}
+                borderStyle="dashed"
+                borderColor="black"
+                rounded="md"
+              >
+                <Stack spacing={1} textAlign="center">
+                  <Icon
+                    mx="auto"
+                    boxSize={12}
+                    color="gray.400"
+                    stroke="currentColor"
+                    fill="none"
+                    viewBox="0 0 48 48"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </Icon>
+                  <Flex fontSize="sm" color="gray.600" alignItems="baseline">
+                    <FormLabel
+                      color="red"
+                      htmlFor="video-upload"
+                      cursor="pointer"
+                      rounded="md"
+                      fontSize="md"
+                      pos="relative"
+                      _hover={{
+                        color: "blue.400",
+                      }}
+                    >
+                      <span>Upload video</span>
+                      <VisuallyHidden>
+                        <Input
+                          id="video-upload"
+                          name="video-upload"
+                          type="file"
+                          accept="video/*"
+                        />
+                      </VisuallyHidden>
+                    </FormLabel>
+                    <Text>or drag and drop</Text>
+                  </Flex>
+                  <Text fontSize="xs" color="gray.500">
+                    PNG, JPG, GIF up to 10MB
+                  </Text>
+                </Stack>
+              </Flex>
+            </FormControl>
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="red" mr={3} onClick={closeModal}>
+              Close
+            </Button>
+            <Button
+              type="button"
+              colorScheme="blue"
+              onClick={submitReport}
+              isLoading={isLoading}
+              loadingText="Submitting"
+            >
+              Submit
+            </Button>
+          </ModalFooter>
         </ModalContent>
       </Modal>
     </div>
