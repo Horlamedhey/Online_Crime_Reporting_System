@@ -23,8 +23,25 @@ import {
 import { useState } from "react";
 import { natureOfCrime } from "@/data.js";
 import supabase from "@/supabase";
+import { AudioRecorder, useAudioRecorder } from "react-audio-voice-recorder";
 
 export default function ModalComponent({ classes, openModal, closeModal }) {
+  const recorderControls = useAudioRecorder(
+    {
+      noiseSuppression: true,
+      echoCancellation: true,
+    },
+    (err) => console.table(err)
+  );
+
+  const addAudioElement = (voiceNote) => {
+    const url = URL.createObjectURL(blob);
+    console.log(url);
+    // const audio = document.createElement("audio");
+    // audio.src = url;
+    // audio.controls = true;
+    // document.body.appendChild(audio);
+  };
   const testRecord = {
     caseId: 1000,
     reporter: "Abdulazeez",
@@ -48,6 +65,7 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
     phone: "",
     address: "",
     crimeDescription: "",
+    audio: "",
   });
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -228,7 +246,13 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
             </FormControl>
             <FormControl id="voiceNote" mb="4">
               <FormLabel>Voice note</FormLabel>
-              <Input type="text" placeholder="voice note" />
+              <AudioRecorder
+                onRecordingComplete={(voiceNote) => addAudioElement(voiceNote)}
+                recorderControls={recorderControls}
+                downloadOnSavePress={true}
+                downloadFileExtension="mp3"
+              />
+              {/* <Input type="text" placeholder="voice note" /> */}
             </FormControl>
             <FormControl id="evidence" mb="0">
               <FormLabel>Upload Evidence</FormLabel>
