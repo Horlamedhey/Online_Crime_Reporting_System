@@ -10,11 +10,20 @@ export default async function Complains({ searchParams }) {
       ? allStatus
       : [searchParams.status];
   const { data } = await supabase.from("crimes").select().in("status", queries);
+  const processedData = data.map(({ createdAt, resolvedAt, ...rest }) => {
+    return {
+      ...rest,
+      createdAt: new Date(createdAt).toLocaleDateString(),
+      resolvedAt: resolvedAt ? new Date(resolvedAt).toLocaleDateString() : null,
+      createdAtLong: new Date(createdAt).toLocaleString(),
+      resolvedAtLong: resolvedAt ? new Date(resolvedAt).toLocaleString() : null,
+    };
+  });
 
   return (
     <main className={styles.main}>
       <div>
-        <AdminTable data={data} />
+        <AdminTable data={processedData} />
       </div>
     </main>
   );

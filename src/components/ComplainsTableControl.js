@@ -145,7 +145,12 @@ export default function ComplainsTableControl({ setTableState, setTableData }) {
 
   return (
     <Box>
-      <Flex id="tableControl" justify="space-between" p={2} align="center">
+      <Flex
+        id="tableControl"
+        justify="space-between"
+        p={2}
+        align="center"
+      >
         <Box w="40%">
           <Searchbar
             isClearable
@@ -155,7 +160,10 @@ export default function ComplainsTableControl({ setTableState, setTableData }) {
             placeholder="Search a crime"
           />
         </Box>
-        <Flex pr={1} gap="20px">
+        <Flex
+          pr={1}
+          gap="20px"
+        >
           <Box>
             <Menu isLazy>
               <MenuButton
@@ -167,11 +175,13 @@ export default function ComplainsTableControl({ setTableState, setTableData }) {
                 {parsedFilter &&
                   `: ${parsedFilter.group.label} - ${parsedFilter.item.label}`}
               </MenuButton>
-              <MenuList overflow="auto" maxH="60vh">
+              <MenuList
+                overflow="auto"
+                maxH="60vh"
+              >
                 {filters.map((u, i) => (
-                  <React.Fragment>
+                  <React.Fragment key={u.group.label}>
                     <MenuOptionGroup
-                      key={u.group.label}
                       type="radio"
                       value={filter}
                       onChange={(currFilter) => {
@@ -204,7 +214,10 @@ export default function ComplainsTableControl({ setTableState, setTableData }) {
               >
                 Sort by{sortLabel && `: ${sortLabel}`}
               </MenuButton>
-              <MenuList overflow="auto" maxH="60vh">
+              <MenuList
+                overflow="auto"
+                maxH="60vh"
+              >
                 <MenuOptionGroup
                   type="radio"
                   value={sort}
@@ -235,7 +248,10 @@ export default function ComplainsTableControl({ setTableState, setTableData }) {
           </Flex>
         </Flex>
       </Flex>
-      <Progress size="xs" isIndeterminate={tableLoading} />
+      <Progress
+        size="xs"
+        isIndeterminate={tableLoading}
+      />
     </Box>
   );
 }

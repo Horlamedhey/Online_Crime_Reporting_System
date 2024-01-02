@@ -39,7 +39,11 @@ export default function AdminTable({ data }) {
         setTableData={setTableData}
       />
 
-      <Flex w="full" alignItems="center" justifyContent="center">
+      <Flex
+        w="full"
+        alignItems="center"
+        justifyContent="center"
+      >
         <Stack
           direction={{
             base: "column",
@@ -73,7 +77,11 @@ export default function AdminTable({ data }) {
               fontSize="md"
             >
               {tableHeaders.map((header) => (
-                <Text key={header.title} fontWeight={700} color="black">
+                <Text
+                  key={header.title}
+                  fontWeight={700}
+                  color="black"
+                >
                   {header.title}
                 </Text>
               ))}
@@ -112,7 +120,11 @@ export default function AdminTable({ data }) {
                   fontSize="md"
                 >
                   {tableHeaders.map((header) => (
-                    <Text key={header.title} fontWeight={700} color="black">
+                    <Text
+                      key={header.title}
+                      fontWeight={700}
+                      color="black"
+                    >
                       {header.title}
                     </Text>
                   ))}
@@ -134,7 +146,7 @@ export default function AdminTable({ data }) {
                 <Text>{item.reporter}</Text>
                 <Text>{item.address}</Text>
                 <Text>{item.natureOfCrime}</Text>
-                <Text>{new Date(item.createdAt).toLocaleDateString()}</Text>
+                <Text>{item.createdAt}</Text>
                 <Box>
                   <Badge
                     variant="subtle"
@@ -167,11 +179,13 @@ export default function AdminTable({ data }) {
         </Stack>
       </Flex>
 
-      <CrimeDetailsModal
-        isOpen={crimeModal}
-        closeModal={() => setCrimeModal(false)}
-        currentCase={currentCase}
-      />
+      {crimeModal && (
+        <CrimeDetailsModal
+          isOpen={crimeModal}
+          closeModal={() => setCrimeModal(false)}
+          currentCase={currentCase}
+        />
+      )}
     </div>
   );
 }
