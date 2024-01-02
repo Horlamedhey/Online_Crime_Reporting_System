@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { natureOfCrime } from "@/data.js";
-import supabase from "@/supabase";
+
 export default function ChatFooter({
   inputMessage,
   setInputMessage,

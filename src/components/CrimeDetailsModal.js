@@ -19,6 +19,11 @@ import {
   Img,
   Icon,
   IconButton,
+  Menu,
+  MenuItemOption,
+  MenuList,
+  MenuButton,
+  MenuOptionGroup,
 } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import { PhoneIcon, StarIcon } from "@chakra-ui/icons";
@@ -28,13 +33,36 @@ import { MdMyLocation } from "react-icons/md";
 import { CiLocationOn } from "react-icons/ci";
 import { IoChatbubbleEllipses } from "react-icons/io5";
 import Chat from "./Chat";
+import supabase from "@/supabase";
 export default function CrimeDetailsModal({ isOpen, closeModal, currentCase }) {
   const [isClient, setIsClient] = useState(true);
   const [openChat, setOpenChat] = useState(false);
-
+  const [status, setStatus] = useState(null);
+  //used null above because it keeps bringing error because the currentCase status doesnt pop up immediately
   useEffect(() => {
     setIsClient(!localStorage.getItem("loggedInStation"));
   }, [isClient]);
+
+  const updateStatus = async (status) => {
+    const { data, error } = await supabase
+      .from("crimes")
+      .update({ status: status })
+      .eq("id", currentCase.id)
+      .select();
+    // the update status isn't bringing any error but it not working and returning an empty array
+
+    if (error) {
+      console.error("Error updating data:", error);
+    } else {
+      console.log("Data updated successfully:", data);
+      console.log("Data updated successfully:", data.status);
+    }
+  };
+  useEffect(() => {
+    updateStatus(status);
+    console.log(status);
+    // i dont know why this use effect is working despite i set the dependency to status
+  }, [status]);
 
   return (
     <div>
@@ -266,9 +294,28 @@ export default function CrimeDetailsModal({ isOpen, closeModal, currentCase }) {
                       >
                         Open location in map
                       </Button>
-                      <Button colorScheme="blue" variant="outline">
-                        Change status
-                      </Button>
+                      <Menu>
+                        <MenuButton
+                          as={Button}
+                          // variant="outline"
+                          // rightIcon={<ChevronDownIcon />}
+                        >
+                          {/* rightIcon={<ChevronDownIcon} /> */}
+                          Change Status
+                        </MenuButton>
+
+                        <MenuList>
+                          <MenuOptionGroup
+                            onChange={(status) => setStatus(status)}
+                          >
+                            {Object.entries(badge).map(([key, values], i) => (
+                              <MenuItemOption value={key}>
+                                {values.label}
+                              </MenuItemOption>
+                            ))}
+                          </MenuOptionGroup>
+                        </MenuList>
+                      </Menu>
                     </Flex>
                   </Box>
                 </Flex>
