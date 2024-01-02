@@ -148,7 +148,7 @@ export default function CrimeDetailsModal({ isOpen, closeModal, currentCase }) {
                     <AspectRatio borderRadius={5} h="100%" overflow="hidden">
                       <iframe
                         title="naruto"
-                        src="https://www.youtube.com/embed/QhBnZ6NPOY0"
+                        src="https://www.youtube.com/embed/PEyj5mGDqls?si=FpaIxcwA8u3tEe73"
                         allowFullScreen
                       />
                     </AspectRatio>

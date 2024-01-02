@@ -37,8 +37,9 @@ import { AudioRecorder, useAudioRecorder } from "react-audio-voice-recorder";
 import { VoiceRecorder } from "react-voice-recorder-player";
 export default function ModalComponent({ classes, openModal, closeModal }) {
   const [selectedImages, setSelectedImages] = useState([]);
-  const [uploadedVideo, setUploadedVideo] = useState(null);
+  const [selectedVideo, setselectedVideo] = useState(null);
   const [selectedVoiceNote, setSelectedVoiceNote] = useState(null);
+  const [location, setLocation] = useState(null);
   const [imageLoading, setImageLoading] = useState(false);
   const [videoLoading, setVideoLoading] = useState(false);
   const [hoveredImage, setHoveredImage] = useState(null);
@@ -73,11 +74,16 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
       setSelectedImages((prevFiles) => [...prevFiles, imageUrl]);
     }
   };
+  const deleteImage = (i) => {
+    const updatedArray = [...selectedImages];
+    updatedArray.splice(i, 1);
+    setSelectedImages(updatedArray);
+  };
   const handleVideoChange = (event) => {
     const video = event.target.files[0];
     const url = URL.createObjectURL(video);
 
-    setUploadedVideo(url);
+    setselectedVideo(url);
   };
 
   const testRecord = {
@@ -102,13 +108,13 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
     phone: "",
     address: "",
     crimeDescription: "",
-    audio: "",
+    natureOfCrime: "",
   });
-  const handleChange = (event) => {
-    const { name, value } = event.target;
+  const handleFormChange = (e) => {
+    const { name, value } = e.target;
 
-    setFormData((input) => ({
-      ...input,
+    setFormData((inputs) => ({
+      ...inputs,
       [name]: value,
     }));
     console.log(formData.reporter);
@@ -166,7 +172,7 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
                 placeholder="Enter your name"
                 name="reporter"
                 value={formData.reporter}
-                onChange={handleChange}
+                onChange={handleFormChange}
               />
             </FormControl>
             <FormControl id="phone" mb="4">
@@ -176,7 +182,7 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
                 placeholder="Phone number"
                 name="phone"
                 value={formData.phone}
-                onChange={handleChange}
+                onChange={handleFormChange}
               />
             </FormControl>
 
@@ -184,9 +190,10 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
               <FormLabel>Enter incident location</FormLabel>
               <Input
                 type="text"
+                name="address"
                 placeholder="Enter incident location"
                 value={formData.address}
-                onChange={handleChange}
+                onChange={handleFormChange}
               />
             </FormControl>
             <Center fontSize="2xl" mb="4">
@@ -195,10 +202,16 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
             <FormControl id="natureOfCrime" mb="4">
               <FormLabel>Nature of Crime</FormLabel>
 
-              <Select placeholder="">
-                <option>Select nature of crime</option>
-                {natureOfCrime.map((value, key) => (
-                  <option key={key + 1}>{value}</option>
+              <Select
+                placeholder="Select nature of crime"
+                name="natureOfCrime"
+                value={formData.natureOfCrime}
+                onChange={handleFormChange}
+              >
+                {natureOfCrime.map((v, i) => (
+                  <option key={i} value={v}>
+                    {v}
+                  </option>
                 ))}
               </Select>
             </FormControl>
@@ -208,7 +221,7 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
                 placeholder="Enter your report"
                 name="crimeDescription"
                 value={formData.crimeDescription}
-                onChange={handleChange}
+                onChange={handleFormChange}
               />
             </FormControl>
             <FormControl id="voiceNote" mb="4">
@@ -255,6 +268,7 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
                           color="white"
                           borderRadius="full"
                           onMouseEnter={() => setHoveredImage(i)}
+                          onClick={() => deleteImage(i)}
                         />
                       )}
                     </GridItem>
@@ -262,133 +276,150 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
                 </Grid>
                 // </Box>
               )}
-              <Flex
-                mt={1}
-                justify="center"
-                px={4}
-                pt={3}
-                pb={4}
-                borderWidth={2}
-                borderStyle="dashed"
-                borderColor="black"
-                rounded="md"
-              >
-                <Stack spacing={1} textAlign="center">
-                  <Progress size="xs" isIndeterminate={imageLoading} />
-                  <Icon
-                    mx="auto"
-                    boxSize={12}
-                    color="gray.400"
-                    stroke="currentColor"
-                    fill="none"
-                    viewBox="0 0 48 48"
-                    aria-hidden="true"
-                  >
-                    <path
-                      d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </Icon>
-                  <Flex fontSize="sm" color="gray.600" alignItems="baseline">
-                    <FormLabel
-                      color="blue.400"
-                      htmlFor="image-upload"
-                      cursor="pointer"
-                      rounded="md"
-                      fontSize="md"
-                      pos="relative"
-                      _hover={{
-                        color: "blue",
-                      }}
-                    >
-                      <span> Upload Images</span>
-
-                      <VisuallyHidden>
-                        <Input
-                          id="image-upload"
-                          name="image-upload"
-                          type="file"
-                          accept="image/*"
-                          onChange={handleImageChange}
-                          multiple
-                        />
-                      </VisuallyHidden>
-                    </FormLabel>
-                    <Text>or drag and drop</Text>
-                  </Flex>
-                  <Text fontSize="xs" color="gray.500">
-                    (Maximum of 4)
-                  </Text>
-                </Stack>
-              </Flex>
-              {uploadedVideo && ( // This video will have equal sides
-                <AspectRatio
-                  my={2}
-                  // maxW="560px"
-                  ratio={3 / 2}
-                  display={uploadedVideo.length ? "block" : "none"}
+              <Progress size="xs" isIndeterminate={imageLoading} />
+              {selectedImages.length < 4 && (
+                <Flex
+                  my={3}
+                  justify="center"
+                  px={4}
+                  pt={3}
+                  pb={4}
+                  borderWidth={2}
+                  borderStyle="dashed"
+                  borderColor="black"
+                  rounded="md"
                 >
-                  <iframe src={uploadedVideo} allowFullScreen />
-                </AspectRatio>
-              )}
-              <Flex
-                mt={1}
-                justify="center"
-                px={4}
-                pt={3}
-                pb={4}
-                borderWidth={2}
-                borderStyle="dashed"
-                borderColor="black"
-                rounded="md"
-              >
-                <Stack spacing={1} textAlign="center">
-                  <Progress size="xs" isIndeterminate={videoLoading} />
-                  <Icon
-                    mx="auto"
-                    boxSize={12}
-                    color="gray.400"
-                    stroke="currentColor"
-                    fill="none"
-                    viewBox="0 0 48 48"
-                    aria-hidden="true"
-                  >
-                    <path
-                      d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </Icon>
-                  <Flex fontSize="sm" color="gray.600" alignItems="baseline">
-                    <FormLabel
-                      color="blue.400"
-                      htmlFor="video-upload"
-                      cursor="pointer"
-                      rounded="md"
-                      fontSize="md"
-                      pos="relative"
-                      _hover={{
-                        color: "blue",
-                      }}
+                  <Stack spacing={1} textAlign="center">
+                    <Icon
+                      mx="auto"
+                      boxSize={12}
+                      color="gray.400"
+                      stroke="currentColor"
+                      fill="none"
+                      viewBox="0 0 48 48"
+                      aria-hidden="true"
                     >
-                      <span>Upload video</span>
-                      <VisuallyHidden>
-                        <Input
-                          id="video-upload"
-                          name="video-upload"
-                          type="file"
-                          onChange={handleVideoChange}
-                          accept="video/*"
-                        />
-                      </VisuallyHidden>
-                    </FormLabel>
-                    <Text>or drag and drop</Text>
-                  </Flex>
-                </Stack>
-              </Flex>
+                      <path
+                        d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </Icon>
+                    <Flex fontSize="sm" color="gray.600" alignItems="baseline">
+                      <FormLabel
+                        color="blue.400"
+                        htmlFor="image-upload"
+                        cursor="pointer"
+                        rounded="md"
+                        fontSize="md"
+                        pos="relative"
+                        _hover={{
+                          color: "blue",
+                        }}
+                      >
+                        <span> Upload Images</span>
+
+                        <VisuallyHidden>
+                          <Input
+                            id="image-upload"
+                            name="image-upload"
+                            type="file"
+                            accept="image/*"
+                            onChange={handleImageChange}
+                            multiple
+                          />
+                        </VisuallyHidden>
+                      </FormLabel>
+                      <Text>or drag and drop</Text>
+                    </Flex>
+                    <Text fontSize="xs" color="gray.500">
+                      (Maximum of 4)
+                    </Text>
+                  </Stack>
+                </Flex>
+              )}
+              {selectedVideo && ( // This video will have equal sides
+                <Box position="relative">
+                  <AspectRatio
+                    my={2}
+                    // maxW="560px"
+                    ratio={3 / 2}
+                    display={selectedVideo.length ? "block" : "none"}
+                  >
+                    <iframe src={selectedVideo} allowFullScreen />
+                  </AspectRatio>
+                  <CloseButton
+                    top="10px"
+                    right="10px"
+                    position="absolute"
+                    size="sm"
+                    bg="red"
+                    color="white"
+                    borderRadius="full"
+                    // onMouseEnter={() => setHoveredImage(i)}
+                    onClick={() => setselectedVideo(null)}
+                  />
+                </Box>
+              )}
+              <Progress size="xs" isIndeterminate={videoLoading} />
+              {!selectedVideo && (
+                <Flex
+                  mt={1}
+                  justify="center"
+                  px={4}
+                  pt={3}
+                  pb={4}
+                  borderWidth={2}
+                  borderStyle="dashed"
+                  borderColor="black"
+                  rounded="md"
+                >
+                  <Stack spacing={1} textAlign="center">
+                    <Icon
+                      mx="auto"
+                      boxSize={12}
+                      color="gray.400"
+                      stroke="currentColor"
+                      fill="none"
+                      viewBox="0 0 48 48"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </Icon>
+                    <Flex fontSize="sm" color="gray.600" alignItems="baseline">
+                      <FormLabel
+                        color="blue.400"
+                        htmlFor="video-upload"
+                        cursor="pointer"
+                        rounded="md"
+                        fontSize="md"
+                        pos="relative"
+                        _hover={{
+                          color: "blue",
+                        }}
+                      >
+                        <span>Upload video</span>
+                        <VisuallyHidden>
+                          <Input
+                            id="video-upload"
+                            name="video-upload"
+                            type="file"
+                            onChange={handleVideoChange}
+                            accept="video/*"
+                          />
+                        </VisuallyHidden>
+                      </FormLabel>
+                      <Text>or drag and drop</Text>
+                    </Flex>
+                  </Stack>
+                </Flex>
+              )}
             </FormControl>
           </ModalBody>
           <ModalFooter>
