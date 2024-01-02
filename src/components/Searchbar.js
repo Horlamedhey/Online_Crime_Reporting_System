@@ -8,6 +8,7 @@ export default function Searchbar({
   isLoading,
   isClearable,
   searchCrime,
+  placeholder,
 }) {
   /*this is created to search for a rime and return and get the state of the input field using props */
   const [query, setQuery] = useState("");
@@ -18,13 +19,9 @@ export default function Searchbar({
     setTableControl(document.getElementById("tableControl"));
   }, [tableControl]);
   return (
-    <Flex
-      align="center"
-      gap="10px"
-      w="100%"
-    >
+    <Flex align="center" gap="10px" w="100%">
       <Input
-        placeholder="Search crime status"
+        placeholder={placeholder}
         size="lg"
         color={color ?? "white"}
         value={query}

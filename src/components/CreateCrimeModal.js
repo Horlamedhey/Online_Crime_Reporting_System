@@ -34,7 +34,7 @@ import styles from "@/app/page.module.css";
 import { AudioRecorder, useAudioRecorder } from "react-audio-voice-recorder";
 import { VoiceRecorder } from "react-voice-recorder-player";
 export default function ModalComponent({ classes, openModal, closeModal }) {
-  const [selectedImages, setSelectedImages] = useState([]);
+  const [uploadedImages, setUploadedImages] = useState([]);
   const [uploadedVideo, setUploadedVideo] = useState([]);
   const [selectedVoiceNote, setSelectedVoiceNote] = useState([]);
   const [imageLoading, setImageLoading] = useState(false);
@@ -58,7 +58,7 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
     setImageLoading(true);
     const images = event.target.files;
 
-    if (images.length > 4) {
+    if (images.length + uploadedImages.length > 4) {
       setImageLoading(false);
       alert(`You can only upload up maximum of 4 files.`);
       return;
@@ -70,7 +70,7 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
       const imageUrl = URL.createObjectURL(images[a]);
 
       setTimeout(() => {
-        setSelectedImages((prevFiles) => [...prevFiles, imageUrl]);
+        setUploadedImages((prevFiles) => [...prevFiles, imageUrl]);
         setImageLoading(false);
       }, 2000);
     }
@@ -221,20 +221,20 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
             </FormControl>
             <FormControl id="voiceNote" mb="4">
               <FormLabel>Voice note</FormLabel>
-              <VoiceRecorder onRecordingEnd={() => console.log("ase")} />
-              {/* <AudioRecorder
+              {/* <VoiceRecorder onRecordingEnd={() => console.log("ase")} /> */}
+              <AudioRecorder
                 onRecordingComplete={(voiceNote) => addAudioElement(voiceNote)}
                 recorderControls={recorderControls}
                 // downloadOnSavePress={true}
                 // downloadFileExtension="mp3"
-              /> */}
+              />
             </FormControl>
             {/* TODO make this space hidden if no file is available */}
             <FormControl id="evidence" mb="0">
               <FormLabel>Upload Evidence</FormLabel>
-              {selectedImages && (
+              {uploadedImages && (
                 <Grid templateColumns="repeat(4, 1fr)" gap={3}>
-                  {selectedImages.map((images) => (
+                  {uploadedImages.map((images) => (
                     <GridItem w="100%" h="12" bg="red">
                       <Image objectFit="cover" src={images} alt="Dan Abramov" />
                     </GridItem>

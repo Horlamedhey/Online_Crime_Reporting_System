@@ -1,40 +1,44 @@
 "use client";
 import {
-  Button,
-  Input,
   Modal,
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalFooter,
   ModalBody,
   ModalCloseButton,
-  Avatar,
-  Flex,
-  AvatarBadge,
-  Text,
 } from "@chakra-ui/react";
 import { useState } from "react";
 
-import supabase from "@/supabase";
 import ChatHeader from "./ChatHeader";
 import ChatFooter from "./ChatFooter";
 import ChatBody from "./ChatBody";
 export default function Chat({ classes, openModal, closeModal }) {
   const [inputMessage, setInputMessage] = useState("");
 
-  //   const [loggedInUser, setLoggedInUser] = useState("me");
-  //   i woild have use object to proper arrange it but its writing infinity loop
-
   const user = localStorage.getItem("loggedInStation") ? "computer" : "me";
 
   const [messages, setMessages] = useState([
-    { from: "computer", text: "Hi, My Name is HoneyChat" },
-    { from: "me", text: "Hey there" },
-    { from: "me", text: "Myself Ferin Patel" },
     {
       from: "computer",
-      text: "Nice to meet you. You can send me message and i'll reply you with same message.",
+      text: "Hi nikky, you report has been received and is been investigated",
+    },
+    { from: "me", text: "Hi, okay thank God" },
+
+    {
+      from: "computer",
+      text: "where you able to identify anyone while the crime was in progress",
+    },
+    {
+      from: "me",
+      text: "Yes, i saw two people holding a gun with mask almost 5 feet 9 inches tall",
+    },
+    {
+      from: "computer",
+      text: "okay, anything else",
+    },
+    {
+      from: "me",
+      text: "Yes one of the guy has one hand",
     },
   ]);
   const handleSendMessage = () => {

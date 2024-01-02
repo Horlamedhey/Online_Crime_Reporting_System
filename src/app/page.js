@@ -44,7 +44,11 @@ export default function Home() {
         />
         <div className={styles.overlay}>
           <div>
-            <Searchbar searchCrime={searchCrime} isLoading={isLoading} />
+            <Searchbar
+              searchCrime={searchCrime}
+              isLoading={isLoading}
+              placeholder="Search crime status"
+            />
             <Button
               _hover={{ bg: "#fff", color: "blue" }}
               fontSize="3xl"
@@ -56,7 +60,7 @@ export default function Home() {
               px="60px"
               onClick={() => setIsOpen(true)}
             >
-              CREATE A REPORT{isOpen && "true"}
+              REPORT A CRIME{isOpen && "true"}
             </Button>
           </div>
         </div>

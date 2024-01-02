@@ -1,17 +1,23 @@
 import { Avatar, Flex, Text } from "@chakra-ui/react";
 import { useEffect, useRef } from "react";
-import { natureOfCrime } from "@/data.js";
-import supabase from "@/supabase";
 
 export default function ChatBody({ messages, user, avatar }) {
   // kindly explain useRef and useEffect
   const AlwaysScrollToBottom = () => {
     const elementRef = useRef();
+
     useEffect(() => elementRef.current.scrollIntoView());
     return <div ref={elementRef} />;
   };
   return (
-    <Flex w="100%" h="80%" overflowY="scroll" flexDirection="column" p="3">
+    <Flex
+      w="100%"
+      h="80%"
+      maxH="50vh"
+      overflowY="scroll"
+      flexDirection="column"
+      p="3"
+    >
       {messages.map((item, index) => {
         if (item.from === user) {
           return (
