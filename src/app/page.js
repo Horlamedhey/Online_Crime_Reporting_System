@@ -60,7 +60,7 @@ export default function Home() {
               px="60px"
               onClick={() => setIsOpen(true)}
             >
-              REPORT A CRIME{isOpen && "true"}
+              REPORT A CRIME
             </Button>
           </div>
         </div>

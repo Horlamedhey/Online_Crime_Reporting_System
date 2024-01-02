@@ -25,6 +25,8 @@ import {
   Grid,
   GridItem,
   AspectRatio,
+  CloseButton,
+  Img,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { natureOfCrime } from "@/data.js";
@@ -34,11 +36,13 @@ import styles from "@/app/page.module.css";
 import { AudioRecorder, useAudioRecorder } from "react-audio-voice-recorder";
 import { VoiceRecorder } from "react-voice-recorder-player";
 export default function ModalComponent({ classes, openModal, closeModal }) {
-  const [uploadedImages, setUploadedImages] = useState([]);
-  const [uploadedVideo, setUploadedVideo] = useState([]);
-  const [selectedVoiceNote, setSelectedVoiceNote] = useState([]);
+  const [selectedImages, setSelectedImages] = useState([]);
+  const [uploadedVideo, setUploadedVideo] = useState(null);
+  const [selectedVoiceNote, setSelectedVoiceNote] = useState(null);
   const [imageLoading, setImageLoading] = useState(false);
   const [videoLoading, setVideoLoading] = useState(false);
+  const [hoveredImage, setHoveredImage] = useState(null);
+
   const recorderControls = useAudioRecorder(
     {
       noiseSuppression: true,
@@ -55,37 +59,27 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
     // document.body.appendChild(audio);
   };
   const handleImageChange = (event) => {
-    setImageLoading(true);
     const images = event.target.files;
 
-    if (images.length + uploadedImages.length > 4) {
-      setImageLoading(false);
+    if (images.length + selectedImages.length > 4) {
       alert(`You can only upload up maximum of 4 files.`);
       return;
     }
 
     // Use createObjectURL to generate a URL for the selected image
     for (let a = 0; a < images.length; a++) {
-      setImageLoading(true);
       const imageUrl = URL.createObjectURL(images[a]);
 
-      setTimeout(() => {
-        setUploadedImages((prevFiles) => [...prevFiles, imageUrl]);
-        setImageLoading(false);
-      }, 2000);
+      setSelectedImages((prevFiles) => [...prevFiles, imageUrl]);
     }
   };
   const handleVideoChange = (event) => {
-    setVideoLoading(true);
     const video = event.target.files[0];
     const url = URL.createObjectURL(video);
 
-    setTimeout(() => {
-      setUploadedVideo(url);
-      setVideoLoading(false);
-    }, 2000);
+    setUploadedVideo(url);
   };
-  console.log(uploadedVideo);
+
   const testRecord = {
     caseId: 1000,
     reporter: "Abdulazeez",
@@ -185,26 +179,24 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
                 onChange={handleChange}
               />
             </FormControl>
+
             <FormControl id="address" mb="4">
-              <FormLabel>Address</FormLabel>
+              <FormLabel>Enter incident location</FormLabel>
               <Input
                 type="text"
-                placeholder="Enter your Address"
-                name="address"
+                placeholder="Enter incident location"
                 value={formData.address}
                 onChange={handleChange}
               />
-            </FormControl>
-            <FormControl id="location" mb="4">
-              <FormLabel>Location</FormLabel>
-              <Input type="text" placeholder="Enter your Location" />
             </FormControl>
             <Center fontSize="2xl" mb="4">
               Crime details
             </Center>
             <FormControl id="natureOfCrime" mb="4">
               <FormLabel>Nature of Crime</FormLabel>
+
               <Select placeholder="">
+                <option>Select nature of crime</option>
                 {natureOfCrime.map((value, key) => (
                   <option key={key + 1}>{value}</option>
                 ))}
@@ -230,13 +222,41 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
               />
             </FormControl>
             {/* TODO make this space hidden if no file is available */}
-            <FormControl id="evidence" mb="0">
+            <FormControl id="evidence">
               <FormLabel>Upload Evidence</FormLabel>
-              {uploadedImages && (
-                <Grid templateColumns="repeat(4, 1fr)" gap={3}>
-                  {uploadedImages.map((images) => (
-                    <GridItem w="100%" h="12" bg="red">
-                      <Image objectFit="cover" src={images} alt="Dan Abramov" />
+              {!!selectedImages.length && (
+                <Grid templateColumns="repeat(4, 1fr)" gap={3} h="12" mb={2}>
+                  {selectedImages.map((image, i) => (
+                    <GridItem
+                      colSpan={1}
+                      key={i}
+                      overflow="hidden"
+                      borderRadius="5px"
+                      justifyContent="center"
+                      alignItems="center"
+                      position="relative"
+                      display="flex"
+                    >
+                      <Img
+                        objectFit="cover"
+                        objectPosition="center"
+                        src={image}
+                        alt="Dan Abramov"
+                        w="100%"
+                        h="100%"
+                        onMouseEnter={() => setHoveredImage(i)}
+                        onMouseOut={() => setHoveredImage(null)}
+                      />
+                      {hoveredImage == i && (
+                        <CloseButton
+                          position="absolute"
+                          size="sm"
+                          bg="red"
+                          color="white"
+                          borderRadius="full"
+                          onMouseEnter={() => setHoveredImage(i)}
+                        />
+                      )}
                     </GridItem>
                   ))}
                 </Grid>
