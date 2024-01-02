@@ -20,7 +20,6 @@ import {
   Stack,
   Icon,
   Box,
-  Image,
   Progress,
   Grid,
   GridItem,
@@ -31,34 +30,16 @@ import {
 import { useState } from "react";
 import { natureOfCrime } from "@/data.js";
 import supabase from "@/supabase";
-// import styles from "./page.module.css";
-import styles from "@/app/page.module.css";
-import { AudioRecorder, useAudioRecorder } from "react-audio-voice-recorder";
 import { VoiceRecorder } from "react-voice-recorder-player";
 export default function ModalComponent({ classes, openModal, closeModal }) {
   const [selectedImages, setSelectedImages] = useState([]);
   const [selectedVideo, setselectedVideo] = useState(null);
-  const [selectedVoiceNote, setSelectedVoiceNote] = useState(null);
+  const [voiceRecord, setVoiceRecord] = useState(null);
   const [location, setLocation] = useState(null);
   const [imageLoading, setImageLoading] = useState(false);
   const [videoLoading, setVideoLoading] = useState(false);
   const [hoveredImage, setHoveredImage] = useState(null);
 
-  const recorderControls = useAudioRecorder(
-    {
-      noiseSuppression: true,
-      echoCancellation: true,
-    },
-    (err) => console.table(err)
-  );
-  const addAudioElement = (voiceNote) => {
-    const url = URL.createObjectURL(voiceNote);
-    console.log(url);
-    // const audio = document.createElement("audio");
-    // audio.src = url;
-    // audio.controls = true;
-    // document.body.appendChild(audio);
-  };
   const handleImageChange = (event) => {
     const images = event.target.files;
 
@@ -160,12 +141,18 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader bg="blue.400" color="white">
+          <ModalHeader
+            bg="blue.400"
+            color="white"
+          >
             Report a Crime
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody className={classes}>
-            <FormControl id="name" mb="4">
+            <FormControl
+              id="name"
+              mb="4"
+            >
               <FormLabel>Name</FormLabel>
               <Input
                 type="text"
@@ -175,7 +162,10 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
                 onChange={handleFormChange}
               />
             </FormControl>
-            <FormControl id="phone" mb="4">
+            <FormControl
+              id="phone"
+              mb="4"
+            >
               <FormLabel>Phone</FormLabel>
               <Input
                 type="tel"
@@ -186,7 +176,10 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
               />
             </FormControl>
 
-            <FormControl id="address" mb="4">
+            <FormControl
+              id="address"
+              mb="4"
+            >
               <FormLabel>Enter incident location</FormLabel>
               <Input
                 type="text"
@@ -196,10 +189,16 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
                 onChange={handleFormChange}
               />
             </FormControl>
-            <Center fontSize="2xl" mb="4">
+            <Center
+              fontSize="2xl"
+              mb="4"
+            >
               Crime details
             </Center>
-            <FormControl id="natureOfCrime" mb="4">
+            <FormControl
+              id="natureOfCrime"
+              mb="4"
+            >
               <FormLabel>Nature of Crime</FormLabel>
 
               <Select
@@ -209,13 +208,19 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
                 onChange={handleFormChange}
               >
                 {natureOfCrime.map((v, i) => (
-                  <option key={i} value={v}>
+                  <option
+                    key={i}
+                    value={v}
+                  >
                     {v}
                   </option>
                 ))}
               </Select>
             </FormControl>
-            <FormControl id="crimeDescription" mb="4">
+            <FormControl
+              id="crimeDescription"
+              mb="4"
+            >
               <FormLabel>Crime description</FormLabel>
               <Textarea
                 placeholder="Enter your report"
@@ -224,21 +229,29 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
                 onChange={handleFormChange}
               />
             </FormControl>
-            <FormControl id="voiceNote" mb="4">
+            <FormControl
+              id="voiceNote"
+              mb="4"
+            >
               <FormLabel>Voice note</FormLabel>
-              {/* <VoiceRecorder onRecordingEnd={() => console.log("ase")} /> */}
-              <AudioRecorder
-                onRecordingComplete={(voiceNote) => addAudioElement(voiceNote)}
-                recorderControls={recorderControls}
-                // downloadOnSavePress={true}
-                // downloadFileExtension="mp3"
+              <Text>Press the ⏹ button to stop recording</Text>
+              <VoiceRecorder
+                mainContainerStyle={{ margin: 0 }}
+                downloadable={false}
+                onAudioDownload={setVoiceRecord}
+                onRecordingStart={() => setVoiceRecord(null)}
               />
             </FormControl>
             {/* TODO make this space hidden if no file is available */}
             <FormControl id="evidence">
               <FormLabel>Upload Evidence</FormLabel>
               {!!selectedImages.length && (
-                <Grid templateColumns="repeat(4, 1fr)" gap={3} h="12" mb={2}>
+                <Grid
+                  templateColumns="repeat(4, 1fr)"
+                  gap={3}
+                  h="12"
+                  mb={2}
+                >
                   {selectedImages.map((image, i) => (
                     <GridItem
                       colSpan={1}
@@ -276,7 +289,10 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
                 </Grid>
                 // </Box>
               )}
-              <Progress size="xs" isIndeterminate={imageLoading} />
+              <Progress
+                size="xs"
+                isIndeterminate={imageLoading}
+              />
               {selectedImages.length < 4 && (
                 <Flex
                   my={3}
@@ -289,7 +305,10 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
                   borderColor="black"
                   rounded="md"
                 >
-                  <Stack spacing={1} textAlign="center">
+                  <Stack
+                    spacing={1}
+                    textAlign="center"
+                  >
                     <Icon
                       mx="auto"
                       boxSize={12}
@@ -306,7 +325,11 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
                         strokeLinejoin="round"
                       />
                     </Icon>
-                    <Flex fontSize="sm" color="gray.600" alignItems="baseline">
+                    <Flex
+                      fontSize="sm"
+                      color="gray.600"
+                      alignItems="baseline"
+                    >
                       <FormLabel
                         color="blue.400"
                         htmlFor="image-upload"
@@ -333,7 +356,10 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
                       </FormLabel>
                       <Text>or drag and drop</Text>
                     </Flex>
-                    <Text fontSize="xs" color="gray.500">
+                    <Text
+                      fontSize="xs"
+                      color="gray.500"
+                    >
                       (Maximum of 4)
                     </Text>
                   </Stack>
@@ -347,7 +373,10 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
                     ratio={3 / 2}
                     display={selectedVideo.length ? "block" : "none"}
                   >
-                    <iframe src={selectedVideo} allowFullScreen />
+                    <iframe
+                      src={selectedVideo}
+                      allowFullScreen
+                    />
                   </AspectRatio>
                   <CloseButton
                     top="10px"
@@ -362,7 +391,10 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
                   />
                 </Box>
               )}
-              <Progress size="xs" isIndeterminate={videoLoading} />
+              <Progress
+                size="xs"
+                isIndeterminate={videoLoading}
+              />
               {!selectedVideo && (
                 <Flex
                   mt={1}
@@ -375,7 +407,10 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
                   borderColor="black"
                   rounded="md"
                 >
-                  <Stack spacing={1} textAlign="center">
+                  <Stack
+                    spacing={1}
+                    textAlign="center"
+                  >
                     <Icon
                       mx="auto"
                       boxSize={12}
@@ -392,7 +427,11 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
                         strokeLinejoin="round"
                       />
                     </Icon>
-                    <Flex fontSize="sm" color="gray.600" alignItems="baseline">
+                    <Flex
+                      fontSize="sm"
+                      color="gray.600"
+                      alignItems="baseline"
+                    >
                       <FormLabel
                         color="blue.400"
                         htmlFor="video-upload"
@@ -423,7 +462,11 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
             </FormControl>
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="red" mr={3} onClick={closeModal}>
+            <Button
+              colorScheme="red"
+              mr={3}
+              onClick={closeModal}
+            >
               Close
             </Button>
             <Button

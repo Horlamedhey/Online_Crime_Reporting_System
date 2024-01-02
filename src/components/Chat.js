@@ -7,7 +7,7 @@ import {
   ModalBody,
   ModalCloseButton,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import ChatHeader from "./ChatHeader";
 import ChatFooter from "./ChatFooter";
@@ -15,7 +15,10 @@ import ChatBody from "./ChatBody";
 export default function Chat({ classes, openModal, closeModal }) {
   const [inputMessage, setInputMessage] = useState("");
 
-  const user = localStorage.getItem("loggedInStation") ? "computer" : "me";
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    setUser(localStorage.getItem("loggedInStation") ? "computer" : "me");
+  }, []);
 
   const [messages, setMessages] = useState([
     {
@@ -58,7 +61,10 @@ export default function Chat({ classes, openModal, closeModal }) {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader bg="blue.400" color="white">
+          <ModalHeader
+            bg="blue.400"
+            color="white"
+          >
             Chat
           </ModalHeader>
           <ModalCloseButton />
@@ -67,7 +73,11 @@ export default function Chat({ classes, openModal, closeModal }) {
             <ChatHeader avatar={user} />
             {/* header compenet ends */}
             {/* body chat start */}
-            <ChatBody messages={messages} user={user} avatar={user} />
+            <ChatBody
+              messages={messages}
+              user={user}
+              avatar={user}
+            />
             {/* body chat end */}
             {/*footer starts here */}
             <ChatFooter
