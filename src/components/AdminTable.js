@@ -1,13 +1,6 @@
 "use client";
 import {
-  Table,
-  Thead,
-  Tbody,
-  Tr,
   SimpleGrid,
-  Th,
-  Td,
-  TableContainer,
   Button,
   Flex,
   Stack,
@@ -17,21 +10,67 @@ import {
   Show,
 } from "@chakra-ui/react";
 
-import { badge, tableHeaders } from "@/data.js";
+import { badge as statuses, tableHeaders } from "@/data.js";
 import { useState } from "react";
 import CrimeDetailsModal from "./CrimeDetailsModal";
 import ComplainsTableControl from "./ComplainsTableControl";
+import supabase from "@/supabase";
+
+const statusList = Object.entries(statuses)
+  .filter(([key]) => key != "all")
+  .map(([key, val]) => ({ status: key, level: val.level }));
 
 export default function AdminTable({ data }) {
   const [crimeModal, setCrimeModal] = useState(false);
   const [currentCase, setCurrentCase] = useState(null);
   const [tableDisabled, setTableDisabled] = useState(false);
   const [tableData, setTableData] = useState(data);
+  const [downgradingStatus, setDowngradingStatus] = useState(false);
+  const [upgradingStatus, setUpgradingStatus] = useState(false);
 
   const showCase = (item) => {
     setCurrentCase(item);
     setCrimeModal(true);
   };
+
+  const updateStatus = async (updateAction) => {
+    let statusToSet;
+    const updateFunc = async () => {
+      const { error } = await supabase
+        .from("crimes")
+        .update({ status: statusToSet.status })
+        .eq("id", currentCase.id);
+
+      if (error) {
+        alert("Error updating data:", error);
+      } else {
+        alert("Data updated successfully");
+        setCurrentCase((prev) => ({
+          ...prev,
+          status: { key: statusToSet.status, ...statuses[statusToSet.status] },
+        }));
+      }
+
+      return error;
+    };
+
+    if (updateAction == "upgrade") {
+      setUpgradingStatus(true);
+      statusToSet = statusList.find(
+        (v) => v.level == currentCase.status.level + 1
+      );
+      await updateFunc();
+      setUpgradingStatus(false);
+    } else {
+      setDowngradingStatus(true);
+      statusToSet = statusList.find(
+        (v) => v.level == currentCase.status.level - 1
+      );
+      await updateFunc();
+      setDowngradingStatus(false);
+    }
+  };
+
   return (
     <div>
       <ComplainsTableControl
@@ -150,12 +189,12 @@ export default function AdminTable({ data }) {
                 <Box>
                   <Badge
                     variant="subtle"
-                    colorScheme={badge[item.status].color}
+                    colorScheme={item.status.color}
                     textAlign="center"
                     borderRadius="lg"
                     p={2}
                   >
-                    {badge[item.status].label}
+                    {item.status.label}
                   </Badge>
                 </Box>
                 <Flex
@@ -184,6 +223,10 @@ export default function AdminTable({ data }) {
           isOpen={crimeModal}
           closeModal={() => setCrimeModal(false)}
           currentCase={currentCase}
+          updateStatus={updateStatus}
+          statusList={statusList}
+          downgradingStatus={downgradingStatus}
+          upgradingStatus={upgradingStatus}
         />
       )}
     </div>

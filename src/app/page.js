@@ -8,6 +8,7 @@ import ModalComponent from "@/components/CreateCrimeModal.js";
 import record from "@/record.json";
 import CrimeDetailsModal from "@/components/CrimeDetailsModal.js";
 import supabase from "@/supabase";
+import { getProcessedData } from "@/utils";
 export default function Home() {
   const [searchRecord, setSearchRecord] = useState(null);
   const [searchRecordModal, setSearchRecordModal] = useState(false);
@@ -20,7 +21,7 @@ export default function Home() {
         .select()
         .eq("caseId", parseInt(query));
       if (data.length) {
-        setSearchRecord(data[0]);
+        setSearchRecord(getProcessedData(data)[0]);
         setSearchRecordModal(true);
         setIsLoading(false);
       } else {

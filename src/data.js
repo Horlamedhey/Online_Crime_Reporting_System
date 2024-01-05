@@ -2,16 +2,23 @@ import recordJson from "./record.json";
 export const record = recordJson;
 export const badge = {
   all: { color: "blue", colorVariant: "blue.400", label: "All" },
-  open: { color: "red", colorVariant: "red.400", label: "Open" },
+  open: {
+    color: "red",
+    colorVariant: "red.400",
+    label: "Open",
+    level: 1,
+  },
   pending: {
     color: "yellow",
     colorVariant: "yellow.500",
     label: "In-progress",
+    level: 2,
   },
   resolved: {
     color: "green",
     colorVariant: "green.400",
     label: "Resolved",
+    level: 3,
   },
 };
 export const natureOfCrime = [
