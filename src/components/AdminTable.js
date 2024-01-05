@@ -11,23 +11,27 @@ import {
 } from "@chakra-ui/react";
 
 import { badge as statuses, tableHeaders } from "@/data.js";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import CrimeDetailsModal from "./CrimeDetailsModal";
 import ComplainsTableControl from "./ComplainsTableControl";
 import supabase from "@/supabase";
+import { getProcessedData } from "@/utils";
 
-const statusList = Object.entries(statuses)
-  .filter(([key]) => key != "all")
-  .map(([key, val]) => ({ status: key, level: val.level }));
+// const statusList = Object.entries(statuses)
+//   .filter(([key]) => key != "all")
+//   .map(([key, val]) => ({ status: key, level: val.level }));
 
 export default function AdminTable({ data }) {
   const [crimeModal, setCrimeModal] = useState(false);
   const [currentCase, setCurrentCase] = useState(null);
   const [tableDisabled, setTableDisabled] = useState(false);
   const [tableData, setTableData] = useState(data);
-  const [downgradingStatus, setDowngradingStatus] = useState(false);
+  const [updatingStatus, setUpdatingStatus] = useState(false);
   const [upgradingStatus, setUpgradingStatus] = useState(false);
-
+  const [stationId, setStationId] = useState(null);
+  useEffect(() => {
+    setStationId(localStorage.getItem("loggedInStation"));
+  }, [updatingStatus]);
   const showCase = (item) => {
     setCurrentCase(item);
     setCrimeModal(true);
@@ -35,10 +39,10 @@ export default function AdminTable({ data }) {
 
   const updateStatus = async (updateAction) => {
     let statusToSet;
-    const updateFunc = async () => {
+    const updateFunc = async (status) => {
       const { error } = await supabase
         .from("crimes")
-        .update({ status: statusToSet.status })
+        .update({ status, stationId: status == "open" ? null : stationId })
         .eq("id", currentCase.id);
 
       if (error) {
@@ -47,6 +51,7 @@ export default function AdminTable({ data }) {
         alert("Data updated successfully");
         setCurrentCase((prev) => ({
           ...prev,
+          stationId: stationId,
           status: { key: statusToSet.status, ...statuses[statusToSet.status] },
         }));
       }
@@ -54,20 +59,17 @@ export default function AdminTable({ data }) {
       return error;
     };
 
-    if (updateAction == "upgrade") {
-      setUpgradingStatus(true);
-      statusToSet = statusList.find(
-        (v) => v.level == currentCase.status.level + 1
-      );
-      await updateFunc();
-      setUpgradingStatus(false);
+    if (updateAction == "assign") {
+      setUpdatingStatus(true);
+      statusToSet = "pending";
+      await updateFunc("pending");
+      setUpdatingStatus(false);
     } else {
-      setDowngradingStatus(true);
-      statusToSet = statusList.find(
-        (v) => v.level == currentCase.status.level - 1
-      );
-      await updateFunc();
-      setDowngradingStatus(false);
+      setUpdatingStatus(true);
+      statusToSet = "open";
+
+      await updateFunc("open");
+      setUpdatingStatus(false);
     }
   };
 
@@ -75,14 +77,10 @@ export default function AdminTable({ data }) {
     <div>
       <ComplainsTableControl
         setTableState={setTableDisabled}
-        setTableData={setTableData}
+        setTableData={(data) => setTableData(getProcessedData(data))}
       />
 
-      <Flex
-        w="full"
-        alignItems="center"
-        justifyContent="center"
-      >
+      <Flex w="full" alignItems="center" justifyContent="center">
         <Stack
           direction={{
             base: "column",
@@ -116,11 +114,7 @@ export default function AdminTable({ data }) {
               fontSize="md"
             >
               {tableHeaders.map((header) => (
-                <Text
-                  key={header.title}
-                  fontWeight={700}
-                  color="black"
-                >
+                <Text key={header.title} fontWeight={700} color="black">
                   {header.title}
                 </Text>
               ))}
@@ -159,11 +153,7 @@ export default function AdminTable({ data }) {
                   fontSize="md"
                 >
                   {tableHeaders.map((header) => (
-                    <Text
-                      key={header.title}
-                      fontWeight={700}
-                      color="black"
-                    >
+                    <Text key={header.title} fontWeight={700} color="black">
                       {header.title}
                     </Text>
                   ))}
@@ -224,9 +214,9 @@ export default function AdminTable({ data }) {
           closeModal={() => setCrimeModal(false)}
           currentCase={currentCase}
           updateStatus={updateStatus}
-          statusList={statusList}
-          downgradingStatus={downgradingStatus}
+          updatingStatus={updatingStatus}
           upgradingStatus={upgradingStatus}
+          isClient={!stationId}
         />
       )}
     </div>
