@@ -27,8 +27,9 @@ export default function AdminTable({ data }) {
   const [tableDisabled, setTableDisabled] = useState(false);
   const [tableData, setTableData] = useState(data);
   const [updatingStatus, setUpdatingStatus] = useState(false);
-  const [upgradingStatus, setUpgradingStatus] = useState(false);
+  const [resolveLoader, setResolveLoader] = useState(false);
   const [stationId, setStationId] = useState(null);
+  const [resolveState, setResolveState] = useState(false);
   useEffect(() => {
     setStationId(localStorage.getItem("loggedInStation"));
   }, [stationId]);
@@ -37,15 +38,19 @@ export default function AdminTable({ data }) {
     setCrimeModal(true);
   };
   const resolveFunc = async (status) => {
+    setResolveLoader(true);
     const { error } = await supabase
       .from("crimes")
       .update({ status, resolvedAt: new Date().toISOString() })
       .eq("id", currentCase.id);
 
     if (error) {
+      setResolveLoader(false);
       alert("Error updating data:", error);
     } else {
+      setResolveLoader(false);
       alert("Data updated successfully");
+      setResolveState(true);
       setCurrentCase((prev) => ({
         ...prev,
         resolvedAt: new Date().toLocaleString(),
@@ -67,6 +72,7 @@ export default function AdminTable({ data }) {
         alert("Error updating data:", error);
       } else {
         alert("Data updated successfully");
+        setResolveState(false);
         setCurrentCase((prev) => ({
           ...prev,
           stationId: stationId,
@@ -230,9 +236,10 @@ export default function AdminTable({ data }) {
           currentCase={currentCase}
           updateStatus={updateStatus}
           updatingStatus={updatingStatus}
-          upgradingStatus={upgradingStatus}
+          resolveLoader={resolveLoader}
           isClient={!stationId}
           resolveFunc={resolveFunc}
+          resolveState={resolveState}
         />
       )}
     </div>
