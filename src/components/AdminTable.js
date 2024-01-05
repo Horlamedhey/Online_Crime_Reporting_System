@@ -36,7 +36,26 @@ export default function AdminTable({ data }) {
     setCurrentCase(item);
     setCrimeModal(true);
   };
+  const resolveFunc = async (status) => {
+    const { error } = await supabase
+      .from("crimes")
+      .update({ status, resolvedAt: new Date().toISOString() })
+      .eq("id", currentCase.id);
 
+    if (error) {
+      alert("Error updating data:", error);
+    } else {
+      alert("Data updated successfully");
+      setCurrentCase((prev) => ({
+        ...prev,
+        resolvedAt: new Date().toLocaleString(),
+        status: { key: status, ...statuses[status] },
+      }));
+    }
+
+    return error;
+    console.log(status);
+  };
   const updateStatus = async (updateAction) => {
     const updateFunc = async (status) => {
       const { error } = await supabase
@@ -213,6 +232,7 @@ export default function AdminTable({ data }) {
           updatingStatus={updatingStatus}
           upgradingStatus={upgradingStatus}
           isClient={!stationId}
+          resolveFunc={resolveFunc}
         />
       )}
     </div>

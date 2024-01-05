@@ -38,9 +38,10 @@ export default function CrimeDetailsModal({
   updatingStatus,
   upgradingStatus,
   isClient,
+  resolveFunc,
 }) {
   const [openChat, setOpenChat] = useState(false);
-  console.log(currentCase);
+
   return (
     <div>
       <Modal
@@ -289,11 +290,13 @@ export default function CrimeDetailsModal({
                         <Button
                           flex={1}
                           variant="outline"
+                          colorScheme="green"
                           isLoading={upgradingStatus}
-                          isDisabled={currentCase?.status.key == "resolved"}
-                          onClick={() => updateStatus("upgrade")}
+                          // isDisabled={currentCase?.status.key == "resolved"}
+                          onClick={() => resolveFunc("resolved")}
                         >
-                          Upgrade status
+                          Resolve
+                          {/* Upgrade status */}
                         </Button>
                       </Flex>
                     </Flex>
