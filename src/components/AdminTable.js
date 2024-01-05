@@ -31,14 +31,13 @@ export default function AdminTable({ data }) {
   const [stationId, setStationId] = useState(null);
   useEffect(() => {
     setStationId(localStorage.getItem("loggedInStation"));
-  }, [updatingStatus]);
+  }, [stationId]);
   const showCase = (item) => {
     setCurrentCase(item);
     setCrimeModal(true);
   };
 
   const updateStatus = async (updateAction) => {
-    let statusToSet;
     const updateFunc = async (status) => {
       const { error } = await supabase
         .from("crimes")
@@ -52,21 +51,18 @@ export default function AdminTable({ data }) {
         setCurrentCase((prev) => ({
           ...prev,
           stationId: stationId,
-          status: { key: statusToSet.status, ...statuses[statusToSet.status] },
+          status: { key: status, ...statuses[status] },
         }));
       }
 
       return error;
     };
-
+    setUpdatingStatus(true);
     if (updateAction == "assign") {
-      setUpdatingStatus(true);
-      statusToSet = "pending";
       await updateFunc("pending");
       setUpdatingStatus(false);
     } else {
       setUpdatingStatus(true);
-      statusToSet = "open";
 
       await updateFunc("open");
       setUpdatingStatus(false);

@@ -40,7 +40,7 @@ export default function CrimeDetailsModal({
   isClient,
 }) {
   const [openChat, setOpenChat] = useState(false);
-
+  console.log(currentCase);
   return (
     <div>
       <Modal
