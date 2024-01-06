@@ -27,9 +27,8 @@ export default function AdminTable({ data }) {
   const [tableDisabled, setTableDisabled] = useState(false);
   const [tableData, setTableData] = useState(data);
   const [updatingStatus, setUpdatingStatus] = useState(false);
-  const [resolveLoader, setResolveLoader] = useState(false);
+  const [resolveLoading, setResolveLoading] = useState(false);
   const [stationId, setStationId] = useState(null);
-  const [resolveState, setResolveState] = useState(false);
   useEffect(() => {
     setStationId(localStorage.getItem("loggedInStation"));
   }, [stationId]);
@@ -37,61 +36,43 @@ export default function AdminTable({ data }) {
     setCurrentCase(item);
     setCrimeModal(true);
   };
-  const resolveFunc = async (status) => {
-    setResolveLoader(true);
-    const { error } = await supabase
-      .from("crimes")
-      .update({ status, resolvedAt: new Date().toISOString() })
-      .eq("id", currentCase.id);
 
-    if (error) {
-      setResolveLoader(false);
-      alert("Error updating data:", error);
-    } else {
-      setResolveLoader(false);
-      alert("Data updated successfully");
-      setResolveState(true);
-      setCurrentCase((prev) => ({
-        ...prev,
-        resolvedAt: new Date().toLocaleString(),
-        status: { key: status, ...statuses[status] },
-      }));
-    }
-
-    return error;
-    console.log(status);
-  };
   const updateStatus = async (updateAction) => {
     const updateFunc = async (status) => {
+      const field = status == "resolved" ? false : true;
+      field ? setUpdatingStatus(true) : setResolveLoading(true);
+      const resolvedAt = new Date().toISOString();
       const { error } = await supabase
         .from("crimes")
-        .update({ status, stationId: status == "open" ? null : stationId })
+        .update({
+          status,
+          [field ? "stationId" : "resolvedAt"]: field
+            ? status == "open"
+              ? null
+              : stationId
+            : resolvedAt,
+        })
         .eq("id", currentCase.id);
 
       if (error) {
         alert("Error updating data:", error);
       } else {
         alert("Data updated successfully");
-        setResolveState(false);
         setCurrentCase((prev) => ({
           ...prev,
-          stationId: stationId,
+          [field ? "stationId" : "resolvedAt"]: field
+            ? status == "open"
+              ? null
+              : stationId
+            : resolvedAt,
           status: { key: status, ...statuses[status] },
         }));
       }
-
-      return error;
+      field ? setUpdatingStatus(false) : setResolveLoading(false);
     };
-    setUpdatingStatus(true);
-    if (updateAction == "assign") {
-      await updateFunc("pending");
-      setUpdatingStatus(false);
-    } else {
-      setUpdatingStatus(true);
-
-      await updateFunc("open");
-      setUpdatingStatus(false);
-    }
+    if (updateAction == "assign") updateFunc("pending");
+    else if (updateAction == "unassign") updateFunc("open");
+    else updateFunc("resolved");
   };
 
   return (
@@ -101,7 +82,11 @@ export default function AdminTable({ data }) {
         setTableData={(data) => setTableData(getProcessedData(data))}
       />
 
-      <Flex w="full" alignItems="center" justifyContent="center">
+      <Flex
+        w="full"
+        alignItems="center"
+        justifyContent="center"
+      >
         <Stack
           direction={{
             base: "column",
@@ -135,7 +120,11 @@ export default function AdminTable({ data }) {
               fontSize="md"
             >
               {tableHeaders.map((header) => (
-                <Text key={header.title} fontWeight={700} color="black">
+                <Text
+                  key={header.title}
+                  fontWeight={700}
+                  color="black"
+                >
                   {header.title}
                 </Text>
               ))}
@@ -174,7 +163,11 @@ export default function AdminTable({ data }) {
                   fontSize="md"
                 >
                   {tableHeaders.map((header) => (
-                    <Text key={header.title} fontWeight={700} color="black">
+                    <Text
+                      key={header.title}
+                      fontWeight={700}
+                      color="black"
+                    >
                       {header.title}
                     </Text>
                   ))}
@@ -236,10 +229,8 @@ export default function AdminTable({ data }) {
           currentCase={currentCase}
           updateStatus={updateStatus}
           updatingStatus={updatingStatus}
-          resolveLoader={resolveLoader}
+          resolveLoading={resolveLoading}
           isClient={!stationId}
-          resolveFunc={resolveFunc}
-          resolveState={resolveState}
         />
       )}
     </div>
