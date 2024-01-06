@@ -5,7 +5,6 @@ import { Button } from "@chakra-ui/react";
 import { useState } from "react";
 import Searchbar from "@/components/Searchbar.js";
 import ModalComponent from "@/components/CreateCrimeModal.js";
-import record from "@/record.json";
 import CrimeDetailsModal from "@/components/CrimeDetailsModal.js";
 import supabase from "@/supabase";
 import { getProcessedData } from "@/utils";

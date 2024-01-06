@@ -9,13 +9,13 @@ import {
   Badge,
   Show,
 } from "@chakra-ui/react";
-
 import { badge as statuses, tableHeaders } from "@/data.js";
 import { useState, useEffect } from "react";
 import CrimeDetailsModal from "./CrimeDetailsModal";
 import ComplainsTableControl from "./ComplainsTableControl";
 import supabase from "@/supabase";
 import { getProcessedData } from "@/utils";
+import Stars from "./Stars";
 
 // const statusList = Object.entries(statuses)
 //   .filter(([key]) => key != "all")
@@ -29,9 +29,11 @@ export default function AdminTable({ data }) {
   const [updatingStatus, setUpdatingStatus] = useState(false);
   const [resolveLoading, setResolveLoading] = useState(false);
   const [stationId, setStationId] = useState(null);
+
   useEffect(() => {
     setStationId(localStorage.getItem("loggedInStation"));
   }, [stationId]);
+
   const showCase = (item) => {
     setCurrentCase(item);
     setCrimeModal(true);
@@ -101,7 +103,7 @@ export default function AdminTable({ data }) {
               spacingY={3}
               columns={{
                 base: 1,
-                md: 8,
+                md: 9,
               }}
               w={{
                 base: 150,
@@ -144,7 +146,7 @@ export default function AdminTable({ data }) {
                   spacingY={3}
                   columns={{
                     base: 1,
-                    lg: 8,
+                    lg: 9,
                   }}
                   w={{
                     base: 150,
@@ -178,7 +180,7 @@ export default function AdminTable({ data }) {
                 spacingY={3}
                 columns={{
                   base: 1,
-                  lg: 8,
+                  lg: 9,
                 }}
                 w="full"
                 py={2}
@@ -201,6 +203,7 @@ export default function AdminTable({ data }) {
                     {item.status.label}
                   </Badge>
                 </Box>
+                <Stars count={item.severity} />
                 <Flex
                   justify={{
                     base: "start",

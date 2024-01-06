@@ -94,4 +94,5 @@ export const tableHeaders = [
   { title: "Nature of crime", value: "natureOfCrime" },
   { title: "Date", value: "createdAt" },
   { title: "Status", value: "status" },
+  { title: "Severity", value: "severity" },
 ];

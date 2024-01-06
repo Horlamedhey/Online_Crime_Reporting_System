@@ -26,10 +26,20 @@ export default function ChatHeader({ avatar }) {
           avatar == "computer" ? "/ngPolice.jpg" : "https://bit.ly/dan-abramov"
         }
       >
-        <AvatarBadge boxSize="1.25em" bg="green.500" />
+        <AvatarBadge
+          boxSize="1.25em"
+          bg="green.500"
+        />
       </Avatar>
-      <Flex flexDirection="column" mx="5" justify="center">
-        <Text fontSize="lg" fontWeight="bold">
+      <Flex
+        flexDirection="column"
+        mx="5"
+        justify="center"
+      >
+        <Text
+          fontSize="lg"
+          fontWeight="bold"
+        >
           {avatar == "computer" ? "N.P.F" : "User"}
         </Text>
         <Text color="green.500">Online</Text>
