@@ -28,7 +28,7 @@ import {
   Img,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { natureOfCrime, severity } from "@/data.js";
+import { natureOfCrime } from "@/data.js";
 import supabase from "@/supabase";
 import { VoiceRecorder } from "react-voice-recorder-player";
 export default function ModalComponent({ classes, openModal, closeModal }) {
@@ -190,9 +190,9 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
                 value={formData.severity}
                 onChange={handleFormChange}
               >
-                {severity.map((v, i) => (
-                  <option key={i} value={v}>
-                    {v}
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <option key={i + 1} value={i + 1}>
+                    {i + 1}
                   </option>
                 ))}
               </Select>
