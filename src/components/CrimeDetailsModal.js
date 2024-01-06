@@ -51,10 +51,7 @@ export default function CrimeDetailsModal({
         size="full"
       >
         <ModalOverlay />
-        <ModalContent
-          pt={2}
-          pb={10}
-        >
+        <ModalContent pt={2} pb={10}>
           <ModalCloseButton
             bg="red"
             color="#fff"
@@ -65,10 +62,7 @@ export default function CrimeDetailsModal({
           {currentCase && (
             <ModalBody>
               <Box>
-                <Flex
-                  justify="space-between"
-                  align="center"
-                >
+                <Flex justify="space-between" align="center">
                   <Text
                     fontSize="48px"
                     fontWeight={700}
@@ -82,6 +76,7 @@ export default function CrimeDetailsModal({
                   <Text
                     fontWeight={700}
                     fontSize="24px"
+                    textTransform="capitalize"
                     color="#171A1FFF"
                     lineHeight="36px"
                     px="12px"
@@ -89,45 +84,23 @@ export default function CrimeDetailsModal({
                     {currentCase.reporter}
                   </Text>
                 </Flex>
-                <Flex
-                  justify="space-between"
-                  align="center"
-                >
+                <Flex justify="space-between" align="center">
                   <Stars count={currentCase?.severity} />
 
-                  <Flex
-                    gap={4}
-                    fontSize="14px"
-                  >
+                  <Flex gap={4} fontSize="14px">
                     <Box>
-                      <Text
-                        as="span"
-                        color=" #9095A1FF"
-                        mr={1}
-                      >
+                      <Text as="span" color=" #9095A1FF" mr={1}>
                         CrimeID:
                       </Text>
-                      <Text
-                        as="span"
-                        fontWeight={700}
-                        color="#222730FF"
-                      >
+                      <Text as="span" fontWeight={700} color="#222730FF">
                         {currentCase.caseId}
                       </Text>
                     </Box>
                     <Box>
-                      <Text
-                        as="span"
-                        color=" #9095A1FF"
-                        mr={1}
-                      >
+                      <Text as="span" color=" #9095A1FF" mr={1}>
                         StationID:
                       </Text>
-                      <Text
-                        as="span"
-                        fontWeight={700}
-                        color="#222730FF"
-                      >
+                      <Text as="span" fontWeight={700} color="#222730FF">
                         {currentCase.stationId}
                       </Text>
                     </Box>
@@ -141,15 +114,8 @@ export default function CrimeDetailsModal({
                   h="420px"
                   justifyItems="stretch"
                 >
-                  <GridItem
-                    rowSpan={2}
-                    colSpan={2}
-                  >
-                    <AspectRatio
-                      borderRadius={5}
-                      h="100%"
-                      overflow="hidden"
-                    >
+                  <GridItem rowSpan={2} colSpan={2}>
+                    <AspectRatio borderRadius={5} h="100%" overflow="hidden">
                       <iframe
                         title="naruto"
                         src={currentCase?.video}
@@ -175,10 +141,7 @@ export default function CrimeDetailsModal({
                     </GridItem>
                   ))}
                 </Grid>
-                <Flex
-                  justify="space-between"
-                  align="center"
-                >
+                <Flex justify="space-between" align="center">
                   <Badge
                     variant="subtle"
                     colorScheme={currentCase?.status.color}
@@ -188,97 +151,46 @@ export default function CrimeDetailsModal({
                   >
                     {currentCase?.status.label}
                   </Badge>
-                  <Flex
-                    gap={4}
-                    fontSize="14px"
-                  >
+                  <Flex gap={4} fontSize="14px">
                     <Box>
-                      <Text
-                        as="span"
-                        color=" #9095A1FF"
-                        mr={1}
-                      >
+                      <Text as="span" color=" #9095A1FF" mr={1}>
                         Open Date:
                       </Text>
-                      <Text
-                        as="span"
-                        fontWeight={700}
-                        color="#222730FF"
-                      >
+                      <Text as="span" fontWeight={700} color="#222730FF">
                         {currentCase.createdAtLong}
                       </Text>
                     </Box>
 
                     <Box>
-                      <Text
-                        as="span"
-                        color=" #9095A1FF"
-                        mr={1}
-                      >
+                      <Text as="span" color=" #9095A1FF" mr={1}>
                         Resolve Date:
                       </Text>
-                      <Text
-                        as="span"
-                        fontWeight={700}
-                        color="#222730FF"
-                      >
+                      <Text as="span" fontWeight={700} color="#222730FF">
                         {currentCase.resolvedAtLong}
                       </Text>
                     </Box>
                   </Flex>
                 </Flex>
-                <Flex
-                  justify="space-between"
-                  mt={2}
-                  gap={2}
-                >
+                <Flex justify="space-between" mt={2} gap={2}>
                   <Box w="65%">
-                    <Text
-                      fontSize="24px"
-                      fontWeight={700}
-                      mb="12px"
-                    >
+                    <Text fontSize="24px" fontWeight={700} mb="12px">
                       Crime description
                     </Text>
-                    <Text
-                      fontSize="14px"
-                      fontWeight={400}
-                    >
+                    <Text fontSize="14px" fontWeight={400}>
                       {currentCase.crimeDescription}
                     </Text>
                     <Box mt="20px">
                       <Link href={`tel:${currentCase.phone}`}>
-                        <Text
-                          display="inline-flex"
-                          align="center"
-                          my="8px"
-                        >
-                          <Icon
-                            as={MdOutlineAddIcCall}
-                            w={6}
-                            h={5}
-                            mr={1}
-                          />
-                          <Text
-                            as="span"
-                            color="blue.400"
-                          >
+                        <Text display="inline-flex" align="center" my="8px">
+                          <Icon as={MdOutlineAddIcCall} w={6} h={5} mr={1} />
+                          <Text as="span" color="blue.400">
                             {currentCase.phone}
                           </Text>
                         </Text>
                       </Link>
                       <br />
-                      <Text
-                        display="inline-flex"
-                        align="center"
-                        my="8px"
-                      >
-                        <Icon
-                          as={CiLocationOn}
-                          w={6}
-                          h={5}
-                          mr={1}
-                        />
+                      <Text display="inline-flex" align="center" my="8px">
+                        <Icon as={CiLocationOn} w={6} h={5} mr={1} />
                         {currentCase.address}
                       </Text>
                       {/* <Text
@@ -305,15 +217,9 @@ export default function CrimeDetailsModal({
                     >
                       Audio recording
                     </Text>
-                    <Flex
-                      flexDirection="column"
-                      gap={5}
-                    >
+                    <Flex flexDirection="column" gap={5}>
                       <Box>
-                        <audio
-                          controls
-                          style={{ width: "100%" }}
-                        >
+                        <audio controls style={{ width: "100%" }}>
                           <source
                             src={currentCase.voiceNote}
                             type="audio/wav"
@@ -395,6 +301,7 @@ export default function CrimeDetailsModal({
       <Chat
         openModal={openChat}
         closeModal={() => setOpenChat(false)}
+        currentCase={currentCase}
       />
     </div>
   );

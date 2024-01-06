@@ -84,11 +84,7 @@ export default function AdminTable({ data }) {
         setTableData={(data) => setTableData(getProcessedData(data))}
       />
 
-      <Flex
-        w="full"
-        alignItems="center"
-        justifyContent="center"
-      >
+      <Flex w="full" alignItems="center" justifyContent="center">
         <Stack
           direction={{
             base: "column",
@@ -122,11 +118,7 @@ export default function AdminTable({ data }) {
               fontSize="md"
             >
               {tableHeaders.map((header) => (
-                <Text
-                  key={header.title}
-                  fontWeight={700}
-                  color="black"
-                >
+                <Text key={header.title} fontWeight={700} color="black">
                   {header.title}
                 </Text>
               ))}
@@ -165,11 +157,7 @@ export default function AdminTable({ data }) {
                   fontSize="md"
                 >
                   {tableHeaders.map((header) => (
-                    <Text
-                      key={header.title}
-                      fontWeight={700}
-                      color="black"
-                    >
+                    <Text key={header.title} fontWeight={700} color="black">
                       {header.title}
                     </Text>
                   ))}
@@ -188,7 +176,7 @@ export default function AdminTable({ data }) {
               >
                 <Text>{item.caseId}</Text>
                 <Text>{item.stationId}</Text>
-                <Text>{item.reporter}</Text>
+                <Text textTransform="capitalize">{item.reporter}</Text>
                 <Text>{item.address}</Text>
                 <Text>{item.natureOfCrime}</Text>
                 <Text>{item.createdAt}</Text>

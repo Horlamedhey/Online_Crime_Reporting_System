@@ -34,6 +34,7 @@ export const natureOfCrime = [
   "Cyber crime",
   "Other",
 ];
+export const severity = [0, 1, 2, 3, 4, 5];
 export const station = [
   {
     stationId: "1001",

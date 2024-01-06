@@ -12,7 +12,9 @@ import { useState, useEffect } from "react";
 import ChatHeader from "./ChatHeader";
 import ChatFooter from "./ChatFooter";
 import ChatBody from "./ChatBody";
-export default function Chat({ classes, openModal, closeModal }) {
+import supabase from "@/supabase";
+
+export default function Chat({ classes, openModal, closeModal, currentCase }) {
   const [inputMessage, setInputMessage] = useState("");
 
   const [user, setUser] = useState(null);
@@ -44,11 +46,23 @@ export default function Chat({ classes, openModal, closeModal }) {
       text: "Yes one of the guy has one hand",
     },
   ]);
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     const data = inputMessage;
 
     setMessages((old) => [...old, { from: user, text: data }]);
     setInputMessage("");
+    const { error } = await supabase
+      .from("crimes")
+      .update({
+        chat: messages,
+      })
+      .eq(currentCase.id);
+    console.log(currentCase.id);
+    if (error) {
+      alert("Error updating data:", error);
+    } else {
+      alert("Data updated successfully");
+    }
   };
 
   return (
@@ -61,10 +75,7 @@ export default function Chat({ classes, openModal, closeModal }) {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader
-            bg="blue.400"
-            color="white"
-          >
+          <ModalHeader bg="blue.400" color="white">
             Chat
           </ModalHeader>
           <ModalCloseButton />
@@ -73,11 +84,7 @@ export default function Chat({ classes, openModal, closeModal }) {
             <ChatHeader avatar={user} />
             {/* header compenet ends */}
             {/* body chat start */}
-            <ChatBody
-              messages={messages}
-              user={user}
-              avatar={user}
-            />
+            <ChatBody messages={messages} user={user} avatar={user} />
             {/* body chat end */}
             {/*footer starts here */}
             <ChatFooter
