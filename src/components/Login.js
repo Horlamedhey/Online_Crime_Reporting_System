@@ -27,8 +27,6 @@ export default function Login() {
       const userNameExist = stations.some(
         (station) => station.stationId == userName
       );
-
-      console.log(userNameExist);
       if (password == "admin" && userNameExist) {
         setTimeout(() => {
           setIsLoading(false);

@@ -23,11 +23,11 @@ export default function ChatHeader({ avatar }) {
         size="lg"
         name="Abdulazeez"
         src={
-          avatar == "computer" ? "/ngPolice.jpg" : "https://bit.ly/dan-abramov"
+          avatar == "reporter" ? "/ngPolice.jpg" : "https://bit.ly/dan-abramov"
         }
       >
         <AvatarBadge
-          boxSize="1.25em"
+          boxSize="22px"
           bg="green.500"
         />
       </Avatar>
@@ -40,7 +40,7 @@ export default function ChatHeader({ avatar }) {
           fontSize="lg"
           fontWeight="bold"
         >
-          {avatar == "computer" ? "N.P.F" : "User"}
+          {avatar == "reporter" ? "N.P.F" : "User"}
         </Text>
         <Text color="green.500">Online</Text>
       </Flex>

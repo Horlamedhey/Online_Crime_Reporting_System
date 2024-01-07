@@ -1,53 +1,32 @@
-import {
-  Button,
-  Input,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-  Avatar,
-  Flex,
-  AvatarBadge,
-  Text,
-} from "@chakra-ui/react";
+import { Button, Input, Flex } from "@chakra-ui/react";
 import { useState } from "react";
-import { natureOfCrime } from "@/data.js";
 
-export default function ChatFooter({
-  inputMessage,
-  setInputMessage,
-  handleSendMessage,
-}) {
+export default function ChatFooter({ sendMessage }) {
+  const [inputMessage, setInputMessage] = useState("");
   return (
-    <Flex w="100%" mt="5">
+    <Flex
+      w="100%"
+      mt="5"
+      pt={2}
+      borderTop="2px solid"
+      borderColor="gray.300"
+    >
       <Input
         placeholder="Type Something..."
-        border="none"
-        borderRadius="none"
-        _focus={{
-          border: "1px solid black",
-        }}
-        // onKeyPress={(e) => {
-        //   if (e.key === "Enter") {
-        //     handleSendMessage();
-        //   }
-        // }}
+        variant="unstyled"
         value={inputMessage}
         onChange={(e) => setInputMessage(e.target.value)}
       />
       <Button
         colorScheme="blue"
-        borderRadius="none"
-        // _hover={{
-        //   bg: "white",
-        //   color: "black",
-        //   border: "1px solid black",
-        // }}
+        rounded={3}
+        h="auto"
+        py={2}
         isDisabled={inputMessage.trim().length <= 0}
-        onClick={handleSendMessage}
+        onClick={() => {
+          sendMessage(inputMessage);
+          setInputMessage("");
+        }}
       >
         Send
       </Button>

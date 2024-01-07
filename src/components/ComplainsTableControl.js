@@ -29,7 +29,7 @@ export default function ComplainsTableControl({ setTableState, setTableData }) {
 
   const [sort, setSort] = useState("");
   const [sortLabel, setSortLabel] = useState("");
-  const [descending, setDescending] = useState(!false);
+  const [descending, setDescending] = useState(false);
   const [tableLoading, setTableLoading] = useState(false);
   const [searchLoading, setSearchLoading] = useState(false);
   const [filterLoading, setFilterLoading] = useState(false);
@@ -86,18 +86,21 @@ export default function ComplainsTableControl({ setTableState, setTableData }) {
   const searchCrime = async (query) => {
     if (query) {
       setSearchLoading(true);
-      if (parseInt(query)) {
-        const { data: searchResults } = await supabaseQuery.eq("caseId", query);
-        setTableData(searchResults);
-      } else {
-        const { data: searchResults } = await supabaseQuery.textSearch(
-          "fts",
-          query
-        );
-        setTableData(searchResults);
-      }
+      const { data: searchResults } = await supabaseQuery.textSearch(
+        "fts",
+        query
+      );
+      setTableData(searchResults);
+
       setSearchLoading(false);
-    } else fetchCrime();
+    } else {
+      setDescending(false);
+      setSort("");
+      setSortLabel("");
+      setFilter("");
+      setParsedFilter(null);
+      fetchCrime();
+    }
   };
   const filterCrime = async () => {
     setFilterLoading(true);
@@ -158,6 +161,7 @@ export default function ComplainsTableControl({ setTableState, setTableData }) {
             isLoading={searchLoading}
             searchCrime={searchCrime}
             placeholder="Search a crime"
+            filtersUsed={descending || filter || sort}
           />
         </Box>
         <Flex

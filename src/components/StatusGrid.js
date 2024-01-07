@@ -3,26 +3,35 @@ import { Grid, GridItem, Card } from "@chakra-ui/react";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 import { Link } from "@chakra-ui/next-js";
 import { badge } from "@/data.js";
+import { useState } from "react";
+import supabase from "@/supabase";
 
 export default function StatusGrid({ caseStats }) {
-  // const caseStats = [
-  //   {
-  //     status: "all",
-  //     count: 320,
-  //   },
-  //   {
-  //     status: "open",
-  //     count: 320,
-  //   },
-  //   {
-  //     status: "pending",
-  //     count: 2828,
-  //   },
-  //   {
-  //     status: "resolved",
-  //     count: 390,
-  //   },
-  // ];
+  const [stats, setStats] = useState(caseStats);
+
+  const channels = supabase
+    .channel("custom-all-channel")
+    .on(
+      "postgres_changes",
+      { event: "*", schema: "public", table: "crimes" },
+      (payload) => {
+        // TODO: Implement UPDATE; for when status changes
+        if (["INSERT", "DELETE"].includes(payload.eventType)) {
+          const isAdd = payload.eventType === "INSERT" ? true : false;
+          setStats(
+            stats.map((s) => {
+              if (["all", "open"].includes(s.status))
+                return { ...s, count: s.count + (isAdd ? 1 : -1) };
+
+              return { ...s, count: s.count };
+            })
+          );
+        }
+        console.log("Change received!", payload);
+      }
+    )
+    .subscribe();
+
   return (
     <Grid
       gap={2}
@@ -31,7 +40,7 @@ export default function StatusGrid({ caseStats }) {
       templateColumns="repeat(2, 1fr)"
       templateRows="repeat(2, 1fr)"
     >
-      {caseStats.map((caseStat, i) => (
+      {stats?.map((caseStat, i) => (
         <GridItem
           key={caseStat.status}
           rowSpan={1}

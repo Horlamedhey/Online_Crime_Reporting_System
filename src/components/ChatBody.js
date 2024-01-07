@@ -1,104 +1,68 @@
-import { Avatar, Flex, Text } from "@chakra-ui/react";
-import { useEffect, useRef } from "react";
+import { Avatar, Box, Flex, Text } from "@chakra-ui/react";
 
 export default function ChatBody({ messages, user, avatar }) {
-  // kindly explain useRef and useEffect
-  const AlwaysScrollToBottom = () => {
-    const elementRef = useRef();
-
-    useEffect(() => elementRef.current.scrollIntoView());
-    return <div ref={elementRef} />;
-  };
   return (
-    <Flex
-      w="100%"
-      h="80%"
-      maxH="50vh"
-      overflowY="scroll"
-      flexDirection="column"
-      p="3"
-    >
-      {messages.map((item, index) => {
+    <>
+      {messages?.map((item, index) => {
         if (item.from === user) {
           return (
-            <Flex key={index} w="100%" justify="flex-end">
-              <Flex
+            <Flex
+              key={index}
+              w="100%"
+              justify="flex-end"
+              my={3}
+              gap={2}
+            >
+              <Box
                 bg="black"
                 color="white"
                 minW="100px"
                 maxW="350px"
-                my="1"
+                rounded={5}
                 p="3"
               >
                 <Text>{item.text}</Text>
-              </Flex>
-            </Flex>
-          );
-        } else {
-          return (
-            <Flex key={index} w="100%">
+              </Box>
               <Avatar
-                name="Computer"
                 src={
-                  avatar == "computer"
+                  avatar == "reporter"
                     ? "https://avataaars.io/?avatarStyle=Transparent&topType=LongHairStraight&accessoriesType=Blank&hairColor=BrownDark&facialHairType=Blank&clotheType=BlazerShirt&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Light"
                     : "/ngPolice.jpg"
                 }
                 bg="blue.300"
               ></Avatar>
-              <Flex
-                bg="gray.100"
-                color="black"
-                minW="100px"
-                maxW="350px"
-                my="1"
-                p="3"
-              >
-                <Text>{item.text}</Text>
-              </Flex>
-            </Flex>
-          );
-        }
-      })}
-      {/* {messages.map((item, index) => {
-        if (item.from === "me") {
-          return (
-            <Flex key={index} w="100%" justify="flex-end">
-              <Flex
-                bg="black"
-                color="white"
-                minW="100px"
-                maxW="350px"
-                my="1"
-                p="3"
-              >
-                <Text>{item.text}</Text>
-              </Flex>
             </Flex>
           );
         } else {
           return (
-            <Flex key="{index}" w="100%">
+            <Flex
+              key={index}
+              w="100%"
+              my={3}
+              gap={2}
+            >
               <Avatar
-                name="Computer"
-                src="https://avataaars.io/?avatarStyle=Transparent&topType=LongHairStraight&accessoriesType=Blank&hairColor=BrownDark&facialHairType=Blank&clotheType=BlazerShirt&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Light"
+                src={
+                  avatar == "station"
+                    ? "https://avataaars.io/?avatarStyle=Transparent&topType=LongHairStraight&accessoriesType=Blank&hairColor=BrownDark&facialHairType=Blank&clotheType=BlazerShirt&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Light"
+                    : "/ngPolice.jpg"
+                }
                 bg="blue.300"
               ></Avatar>
-              <Flex
+              <Box
                 bg="gray.100"
                 color="black"
                 minW="100px"
                 maxW="350px"
-                my="1"
+                rounded={5}
                 p="3"
               >
                 <Text>{item.text}</Text>
-              </Flex>
+              </Box>
             </Flex>
           );
         }
-      })} */}
-      <AlwaysScrollToBottom />
-    </Flex>
+      })}
+    </>
   );
 }

@@ -9,6 +9,7 @@ export default function Searchbar({
   isClearable,
   searchCrime,
   placeholder,
+  filtersUsed,
 }) {
   /*this is created to search for a rime and return and get the state of the input field using props */
   const [query, setQuery] = useState("");
@@ -19,7 +20,11 @@ export default function Searchbar({
     setTableControl(document.getElementById("tableControl"));
   }, [tableControl]);
   return (
-    <Flex align="center" gap="10px" w="100%">
+    <Flex
+      align="center"
+      gap="10px"
+      w="100%"
+    >
       <Input
         placeholder={placeholder}
         size="lg"
@@ -47,7 +52,7 @@ export default function Searchbar({
               setQuery("");
               searchCrime("");
             }}
-            isDisabled={!query}
+            isDisabled={!query && !filtersUsed}
           >
             Clear
           </Button>,

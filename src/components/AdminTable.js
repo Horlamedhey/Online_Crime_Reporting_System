@@ -38,7 +38,6 @@ export default function AdminTable({ data }) {
     setCurrentCase(item);
     setCrimeModal(true);
   };
-
   const updateStatus = async (updateAction) => {
     const updateFunc = async (status) => {
       const field = status == "resolved" ? false : true;
@@ -77,6 +76,45 @@ export default function AdminTable({ data }) {
     else updateFunc("resolved");
   };
 
+  useEffect(() => {
+    const handleInsert = (payload) => {
+      setTableData((prev) => [...prev, getProcessedData([payload.new])[0]]);
+
+      console.log("Insert received!", payload);
+    };
+    const handleUpdate = (payload) => {
+      setTableData((prev) =>
+        prev.map((item) =>
+          item.id == payload.new.id ? getProcessedData([payload.new])[0] : item
+        )
+      );
+      if (payload.new.id == currentCase?.id)
+        setCurrentCase(getProcessedData([payload.new])[0]);
+
+      console.log("Update received!", payload);
+    };
+
+    // Define your subscription here
+    const myChannel = supabase
+      .channel("crimes")
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "crimes" },
+        handleInsert
+      )
+      .on(
+        "postgres_changes",
+        { event: "UPDATE", schema: "public", table: "crimes" },
+        handleUpdate
+      )
+      .subscribe();
+
+    // Cleanup function to unsubscribe
+    return () => {
+      supabase.removeChannel(myChannel);
+    };
+  }, [currentCase?.id]);
+
   return (
     <div>
       <ComplainsTableControl
@@ -84,7 +122,11 @@ export default function AdminTable({ data }) {
         setTableData={(data) => setTableData(getProcessedData(data))}
       />
 
-      <Flex w="full" alignItems="center" justifyContent="center">
+      <Flex
+        w="full"
+        alignItems="center"
+        justifyContent="center"
+      >
         <Stack
           direction={{
             base: "column",
@@ -118,7 +160,11 @@ export default function AdminTable({ data }) {
               fontSize="md"
             >
               {tableHeaders.map((header) => (
-                <Text key={header.title} fontWeight={700} color="black">
+                <Text
+                  key={header.title}
+                  fontWeight={700}
+                  color="black"
+                >
                   {header.title}
                 </Text>
               ))}
@@ -157,7 +203,11 @@ export default function AdminTable({ data }) {
                   fontSize="md"
                 >
                   {tableHeaders.map((header) => (
-                    <Text key={header.title} fontWeight={700} color="black">
+                    <Text
+                      key={header.title}
+                      fontWeight={700}
+                      color="black"
+                    >
                       {header.title}
                     </Text>
                   ))}
