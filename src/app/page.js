@@ -2,21 +2,29 @@
 import Image from "next/image";
 import styles from "./page.module.css";
 import { Button } from "@chakra-ui/react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import { useCookies } from "next-client-cookies";
 import Searchbar from "@/components/Searchbar.js";
 import CreateCrimeModal from "@/components/CreateCrimeModal.js";
 import CrimeDetailsModal from "@/components/CrimeDetailsModal.js";
 import supabase from "@/supabase";
 import { getProcessedData } from "@/utils";
 export default function Home() {
+  const isFirstRun = useRef(true);
+  const cookies = useCookies();
+
   const [searchRecord, setSearchRecord] = useState(null);
   const [searchRecordModal, setSearchRecordModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [stationId, setStationId] = useState(null);
 
   useEffect(() => {
-    setStationId(localStorage.getItem("loggedInStation"));
-  }, [stationId]);
+    if (isFirstRun.current) {
+      isFirstRun.current = false; // toggle flag after first run
+      return; // skip the effect
+    }
+    setStationId(cookies.get("loggedInStation"));
+  }, []);
 
   const searchCrime = async (query) => {
     if (query) {
@@ -39,11 +47,8 @@ export default function Home() {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    const handleUpdate = (payload) => {
+    const handleUpdate = (payload) =>
       setSearchRecord(getProcessedData([payload.new])[0]);
-
-      console.log("Update received!", payload);
-    };
 
     // Define your subscription here
     const myChannel = supabase

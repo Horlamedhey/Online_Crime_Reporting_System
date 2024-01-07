@@ -1,13 +1,20 @@
+"use client";
 import { Avatar, Box, Flex, Text } from "@chakra-ui/react";
+import { useEffect, useRef } from "react";
 
 export default function ChatBody({ messages, user, avatar }) {
+  const messagesContainer = useRef();
+  useEffect(() => {
+    messagesContainer.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
   return (
     <>
       {messages?.map((item, index) => {
         if (item.from === user) {
           return (
             <Flex
-              key={index}
+              ref={messagesContainer}
+              key={`my-${index}`}
               w="100%"
               justify="flex-end"
               my={3}
@@ -36,7 +43,7 @@ export default function ChatBody({ messages, user, avatar }) {
         } else {
           return (
             <Flex
-              key={index}
+              key={`other-${index}`}
               w="100%"
               my={3}
               gap={2}

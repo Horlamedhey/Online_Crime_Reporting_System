@@ -5,9 +5,7 @@ export default function ChatFooter({ sendMessage }) {
   const [inputMessage, setInputMessage] = useState("");
   return (
     <Flex
-      w="100%"
-      mt="5"
-      pt={2}
+      py={1}
       borderTop="2px solid"
       borderColor="gray.300"
     >

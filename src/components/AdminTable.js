@@ -10,18 +10,18 @@ import {
   Show,
 } from "@chakra-ui/react";
 import { badge as statuses, tableHeaders } from "@/data.js";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import { useCookies } from "next-client-cookies";
 import CrimeDetailsModal from "./CrimeDetailsModal";
 import ComplainsTableControl from "./ComplainsTableControl";
 import supabase from "@/supabase";
 import { getProcessedData } from "@/utils";
 import Stars from "./Stars";
 
-// const statusList = Object.entries(statuses)
-//   .filter(([key]) => key != "all")
-//   .map(([key, val]) => ({ status: key, level: val.level }));
-
 export default function AdminTable({ data }) {
+  const isFirstRun = useRef(true);
+  const cookies = useCookies();
+
   const [crimeModal, setCrimeModal] = useState(false);
   const [currentCase, setCurrentCase] = useState(null);
   const [tableDisabled, setTableDisabled] = useState(false);
@@ -31,8 +31,12 @@ export default function AdminTable({ data }) {
   const [stationId, setStationId] = useState(null);
 
   useEffect(() => {
-    setStationId(localStorage.getItem("loggedInStation"));
-  }, [stationId]);
+    if (isFirstRun.current) {
+      isFirstRun.current = false; // toggle flag after first run
+      return; // skip the effect
+    }
+    setStationId(cookies.get("loggedInStation"));
+  }, []);
 
   const showCase = (item) => {
     setCurrentCase(item);
@@ -40,7 +44,7 @@ export default function AdminTable({ data }) {
   };
   const updateStatus = async (updateAction) => {
     const updateFunc = async (status) => {
-      const field = status == "resolved" ? false : true;
+      const field = status != "resolved";
       field ? setUpdatingStatus(true) : setResolveLoading(true);
       const resolvedAt = new Date().toISOString();
       const { error } = await supabase
@@ -77,11 +81,9 @@ export default function AdminTable({ data }) {
   };
 
   useEffect(() => {
-    const handleInsert = (payload) => {
+    const handleInsert = (payload) =>
       setTableData((prev) => [...prev, getProcessedData([payload.new])[0]]);
 
-      console.log("Insert received!", payload);
-    };
     const handleUpdate = (payload) => {
       setTableData((prev) =>
         prev.map((item) =>
@@ -90,8 +92,6 @@ export default function AdminTable({ data }) {
       );
       if (payload.new.id == currentCase?.id)
         setCurrentCase(getProcessedData([payload.new])[0]);
-
-      console.log("Update received!", payload);
     };
 
     // Define your subscription here

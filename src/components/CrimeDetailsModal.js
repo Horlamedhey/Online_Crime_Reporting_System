@@ -10,7 +10,6 @@ import {
   Box,
   Badge,
   Text,
-  Progress,
   Grid,
   GridItem,
   AspectRatio,
@@ -20,14 +19,8 @@ import {
 } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import {
-  MdMyLocation,
-  MdChat,
-  MdLocationPin,
-  MdOutlineAddIcCall,
-} from "react-icons/md";
+import { MdChat, MdLocationPin, MdOutlineAddIcCall } from "react-icons/md";
 import { CiLocationOn } from "react-icons/ci";
-import Chat from "./Chat";
 import Stars from "./Stars";
 
 export default function CrimeDetailsModal({
@@ -39,7 +32,6 @@ export default function CrimeDetailsModal({
   isClient,
   resolveLoading,
 }) {
-  const [openChat, setOpenChat] = useState(false);
   const [currCase, setCurrCase] = useState(null);
 
   useEffect(() => {
@@ -345,17 +337,23 @@ export default function CrimeDetailsModal({
                             isDisabled
                             icon={<MdLocationPin />}
                           />
-                          <IconButton
-                            flex={1}
-                            bg="blue.500"
-                            aria-label="Call Sage"
-                            fontSize="32px"
-                            color="white"
-                            size="lg"
-                            isDisabled={currCase?.status.key == "open"}
-                            onClick={() => setOpenChat(true)}
-                            icon={<MdChat />}
-                          />
+                          <Link
+                            href={`${isClient ? "" : "/admin"}/chats/${
+                              currCase.stationId
+                            }/${currCase?.caseId}`}
+                            style={{ flex: 1 }}
+                          >
+                            <IconButton
+                              bg="blue.500"
+                              aria-label="Call Sage"
+                              fontSize="32px"
+                              color="white"
+                              size="lg"
+                              w="100%"
+                              isDisabled={currCase?.status.key == "open"}
+                              icon={<MdChat />}
+                            />
+                          </Link>
                         </Flex>
                         {!isClient && (
                           <Flex gap={10}>
@@ -408,13 +406,6 @@ export default function CrimeDetailsModal({
             )}
           </ModalContent>
         </Modal>
-      )}
-      {openChat && (
-        <Chat
-          openModal={openChat}
-          closeModal={() => setOpenChat(false)}
-          currentCase={currCase}
-        />
       )}
     </div>
   );

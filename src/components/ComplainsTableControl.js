@@ -232,7 +232,7 @@ export default function ComplainsTableControl({ setTableState, setTableData }) {
                     <MenuItemOption
                       key={sortOption.title}
                       onClick={() => {
-                        setSortLabel(sortOptions[i].title);
+                        setSortLabel(sortOption.title);
                       }}
                       value={sortOption.value}
                     >

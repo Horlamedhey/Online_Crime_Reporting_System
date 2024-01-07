@@ -17,7 +17,7 @@ export default function StatusGrid({ caseStats }) {
       (payload) => {
         // TODO: Implement UPDATE; for when status changes
         if (["INSERT", "DELETE"].includes(payload.eventType)) {
-          const isAdd = payload.eventType === "INSERT" ? true : false;
+          const isAdd = payload.eventType === "INSERT";
           setStats(
             stats.map((s) => {
               if (["all", "open"].includes(s.status))
@@ -27,7 +27,6 @@ export default function StatusGrid({ caseStats }) {
             })
           );
         }
-        console.log("Change received!", payload);
       }
     )
     .subscribe();

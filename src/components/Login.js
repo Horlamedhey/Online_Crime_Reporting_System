@@ -1,5 +1,7 @@
 "use client";
 import React, { useState } from "react";
+import { useCookies } from "next-client-cookies";
+
 import {
   Input,
   InputGroup,
@@ -15,11 +17,14 @@ import { useRouter } from "next/navigation";
 import { station as stations } from "@/data";
 
 export default function Login() {
+  const router = useRouter();
+  const cookies = useCookies();
+
   const [showPassword, setShowPassword] = useState(false);
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
+
   const login = () => {
     setIsLoading(true);
 
@@ -30,8 +35,8 @@ export default function Login() {
       if (password == "admin" && userNameExist) {
         setTimeout(() => {
           setIsLoading(false);
+          cookies.set("loggedInStation", userName);
           router.push("/admin");
-          localStorage.setItem("loggedInStation", userName);
         }, 3000);
       } else {
         setIsLoading(false);
