@@ -23,6 +23,7 @@ export default async function ChatLayoutComp({ children, params }) {
       <Card
         h="50px"
         rounded="none"
+        ml={cookies.get("loggedInStation") && "1px"}
         justify={!cookies.get("loggedInStation") && "center"}
       >
         <ChatHomeNav
