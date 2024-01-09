@@ -4,11 +4,7 @@ import { useState } from "react";
 export default function ChatFooter({ sendMessage }) {
   const [inputMessage, setInputMessage] = useState("");
   return (
-    <Flex
-      py={1}
-      borderTop="2px solid"
-      borderColor="gray.300"
-    >
+    <Flex py={1} borderTop="2px solid" borderColor="gray.300">
       <Input
         placeholder="Type Something..."
         variant="unstyled"

@@ -1,5 +1,6 @@
 import supabase from "@/supabase";
 import StatusGrid from "@/components/StatusGrid";
+export const revalidate = 10;
 export default async function AdminLogin() {
   const { data } = await supabase.rpc("count_cases");
 

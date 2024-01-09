@@ -26,15 +26,9 @@ export default async function ChatLayoutComp({ children, params }) {
         ml={cookies.get("loggedInStation") && "1px"}
         justify={!cookies.get("loggedInStation") && "center"}
       >
-        <ChatHomeNav
-          cases={processedData}
-          stationId={params.stationId}
-        />
+        <ChatHomeNav cases={processedData} stationId={params.stationId} />
       </Card>
-      <Box
-        h="calc(100% - 50px)"
-        overflow="hidden"
-      >
+      <Box h="calc(100% - 50px)" overflow="hidden">
         {children}
       </Box>
     </Box>

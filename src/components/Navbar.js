@@ -23,12 +23,7 @@ export default function Navbar() {
     router.push("/login");
   };
   return (
-    <Flex
-      p={4}
-      bg="blue.400"
-      color="white"
-      align={"center"}
-    >
+    <Flex p={4} bg="blue.400" color="white" align={"center"}>
       <Box>
         <Link>Admin Dashboard</Link>
       </Box>
@@ -39,20 +34,14 @@ export default function Navbar() {
             <Avatar src="/ngPolice.jpg" />
             <Box ml="3">
               <Text fontWeight="bold">Dutse Command</Text>
-              <Text
-                fontSize="sm"
-                float="left"
-              >
-                #00001
+              <Text fontSize="sm" float="left">
+                # 1001
               </Text>
             </Box>
           </Flex>
         </MenuButton>
         <MenuList>
-          <MenuItem
-            color="black"
-            onClick={logOut}
-          >
+          <MenuItem color="black" onClick={logOut}>
             Logout
           </MenuItem>
         </MenuList>

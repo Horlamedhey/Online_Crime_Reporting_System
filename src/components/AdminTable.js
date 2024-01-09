@@ -15,6 +15,7 @@ import { useCookies } from "next-client-cookies";
 import CrimeDetailsModal from "./CrimeDetailsModal";
 import ComplainsTableControl from "./ComplainsTableControl";
 import supabase from "@/supabase";
+
 import { getProcessedData } from "@/utils";
 import Stars from "./Stars";
 
@@ -32,9 +33,11 @@ export default function AdminTable({ data }) {
 
   useEffect(() => {
     if (isFirstRun.current) {
-      isFirstRun.current = false; // toggle flag after first run
+      isFirstRun.current = false;
+      // toggle flag after first run
       return; // skip the effect
     }
+
     setStationId(cookies.get("loggedInStation"));
   }, []);
 
@@ -122,11 +125,7 @@ export default function AdminTable({ data }) {
         setTableData={(data) => setTableData(getProcessedData(data))}
       />
 
-      <Flex
-        w="full"
-        alignItems="center"
-        justifyContent="center"
-      >
+      <Flex w="full" alignItems="center" justifyContent="center">
         <Stack
           direction={{
             base: "column",
@@ -160,11 +159,7 @@ export default function AdminTable({ data }) {
               fontSize="md"
             >
               {tableHeaders.map((header) => (
-                <Text
-                  key={header.title}
-                  fontWeight={700}
-                  color="black"
-                >
+                <Text key={header.title} fontWeight={700} color="black">
                   {header.title}
                 </Text>
               ))}
@@ -203,11 +198,7 @@ export default function AdminTable({ data }) {
                   fontSize="md"
                 >
                   {tableHeaders.map((header) => (
-                    <Text
-                      key={header.title}
-                      fontWeight={700}
-                      color="black"
-                    >
+                    <Text key={header.title} fontWeight={700} color="black">
                       {header.title}
                     </Text>
                   ))}

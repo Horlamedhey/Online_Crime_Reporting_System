@@ -33,6 +33,7 @@ export default function Home() {
         .from("crimes")
         .select()
         .eq("caseId", query);
+
       if (data.length) {
         setSearchRecord(getProcessedData(data)[0]);
         setSearchRecordModal(true);
@@ -91,10 +92,10 @@ export default function Home() {
             />
             <Button
               _hover={{ bg: "#fff", color: "blue" }}
-              fontSize="3xl"
+              fontSize="2xl"
               borderColor="#fff"
               color="#fff"
-              size="lg"
+              size="sm"
               variant="outline"
               py="40px"
               px="60px"
