@@ -34,7 +34,9 @@ import { VoiceRecorder } from "react-voice-recorder-player";
 import { nanoid } from "nanoid";
 
 export default function ModalComponent({ classes, openModal, closeModal }) {
-  const isFirstRun = useRef(true);
+  const isFirstRun1 = useRef(true);
+  const isFirstRun2 = useRef(true);
+  const isFirstRun3 = useRef(true);
   const [selectedImages, setSelectedImages] = useState([]);
   const [imagePreviews, setImagePreviews] = useState([]);
   const [selectedVideo, setSelectedVideo] = useState(null);
@@ -60,17 +62,8 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
   const [uploadsLabel, setUploadsLabel] = useState("");
 
   useEffect(() => {
-    if (isFirstRun.current) {
-      isFirstRun.current = false; // toggle flag after first run
-      return; // skip the effect
-    }
-
-    setFormData((inputs) => ({ ...inputs, caseId: nanoid(5) }));
-  }, []);
-
-  useEffect(() => {
-    if (isFirstRun.current) {
-      isFirstRun.current = false; // toggle flag after first run
+    if (isFirstRun1.current) {
+      isFirstRun1.current = false; // toggle flag after first run
       return; // skip the effect
     }
     // Use createObjectURL to generate a URL for the selected image
@@ -82,8 +75,8 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
   }, [selectedImages]);
 
   useEffect(() => {
-    if (isFirstRun.current) {
-      isFirstRun.current = false; // toggle flag after first run
+    if (isFirstRun2.current) {
+      isFirstRun2.current = false; // toggle flag after first run
       return; // skip the effect
     }
     const url = selectedVideo ? URL.createObjectURL(selectedVideo) : null;
@@ -91,8 +84,8 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
   }, [selectedVideo]);
 
   useEffect(() => {
-    if (isFirstRun.current) {
-      isFirstRun.current = false; // toggle flag after first run
+    if (isFirstRun3.current) {
+      isFirstRun3.current = false; // toggle flag after first run
       return; // skip the effect
     }
     setUploadsLabel(
@@ -182,7 +175,11 @@ export default function ModalComponent({ classes, openModal, closeModal }) {
   const finalizeSubmit = useCallback(async () => {
     const { data, error } = await supabase
       .from("crimes")
-      .insert({ ...formData, severity: parseInt(formData.severity) })
+      .insert({
+        ...formData,
+        caseId: nanoid(5),
+        severity: parseInt(formData.severity),
+      })
       .select();
     if (error) {
       console.error("Error submitting form data:", error.message);
